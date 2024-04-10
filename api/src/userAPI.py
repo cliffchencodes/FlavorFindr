@@ -1,11 +1,11 @@
-import uuid
 import requests
+from src.agg_functions import groupby_sum_totals, groupby_count
 from flask import Blueprint, request, jsonify
 
 
 userAPI = Blueprint("userAPI", __name__)
 DB_URL = "https://dsci551---oogabooga-default-rtdb.firebaseio.com/"  # change to one kelly made
-key = "cheese"
+key = "corn"
 
 
 # PUT method
@@ -28,8 +28,8 @@ def read():
     try:
         response = requests.get(f"{DB_URL}foods.json")
         response.raise_for_status()  # raise error if req not successful
-        all_users = response.json()
-        return jsonify(all_users), 200
+        all_foods = response.json()
+        return jsonify(all_foods), 200
     except Exception as error:
         return f"An error occurred {error}"
 
@@ -42,8 +42,8 @@ def update():
 
         # user inputs & check:
         id = key  # will be user input
-        field1 = "calcium"  # will be user input
-        field1_val = data.get("calcium")
+        field1 = "food_group"  # change this value - UI
+        field1_val = data.get("food_group")  # change this value - UI
         if not id or not field1_val:
             return jsonify({"error": "Food ID or Calcium value not provided"}), 400
 
@@ -60,10 +60,35 @@ def update():
 @userAPI.route("/delete", methods=["DELETE"])
 def delete():
     try:
-        id = key
+        id = key  # User input
         url = f"{DB_URL}foods/{id}.json"
         response = requests.delete(url)
         response.raise_for_status()  # Raise an error if the request was not successful
         return jsonify({"success": True}), 200
     except Exception as error:
         return f"An error occurred: {error}"
+
+
+# AGGREGATE method - WIP
+@userAPI.route("/aggregate", methods=["GET"])
+def perform_aggregation():
+
+    group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
+    agg_operation = request.args.get("aggregation")  # TO ADD: user input agg type
+
+    # aggregate data by querying from db
+    response = requests.get(f"{DB_URL}foods.json")
+    response.raise_for_status()  # raise error if req not successful
+    all_foods = response.json()
+
+    # INSERT FUNCTION HERE
+    res = groupby_sum_totals(all_foods)
+    # groupby_count(foods_json)
+
+    aggregation_result = {
+        "group_by": group_by_column,
+        f"{agg_operation}": res,  # insert val
+    }
+
+    # Return the pre-aggregated result as JSON
+    return jsonify(aggregation_result)
