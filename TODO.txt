@@ -24,23 +24,23 @@ Integration with Backend:
 
 
 -- Backend Tasks --
-Backend Setup:
+Backend Setup: [DONE - Kelly]
 
 	Choose a backend framework (e.g., Flask, FastAPI, Django) and set up the project.
 	Install necessary dependencies and configure the environment.
 
-Database Setup:
+Database Setup: [DONE - Kelly]
 
 	Choose the database system (e.g., PostgreSQL, MySQL, MongoDB, Firebase Firestore) and set up the database.
 	Design the database schema based on the application's data model.
 
-API Development:
+API Development: [50% - Cliff]
 
 	Define RESTful API endpoints for CRUD operations (e.g., GET /items, POST /items, PUT /items/{id}, DELETE /items/{id}).
 	Implement request handlers for each endpoint to handle incoming requests, process data, and interact with the database.
 	Implement authentication middleware to protect endpoints that require authentication.
 
-Authentication and Authorization:
+Authentication and Authorization: [NOT NEEDED?]
 
 	Implement user authentication mechanisms (e.g., username/password, OAuth, JWT).
 	Implement authorization logic to enforce access control rules and permissions.
