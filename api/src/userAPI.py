@@ -1,5 +1,5 @@
 import requests
-from src.agg_functions import groupby_sum_totals, groupby_count
+from src.agg_functions import *
 from flask import Blueprint, request, jsonify
 
 
@@ -73,22 +73,35 @@ def delete():
 @userAPI.route("/aggregate", methods=["GET"])
 def perform_aggregation():
 
-    group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
-    agg_operation = request.args.get("aggregation")  # TO ADD: user input agg type
+    # group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
+    # agg_operation = request.args.get("aggregation")  # TO ADD: user input agg type
+
+    group_by_column = "food_group"
+    agg_op = "sum"
 
     # aggregate data by querying from db
     response = requests.get(f"{DB_URL}foods.json")
-    response.raise_for_status()  # raise error if req not successful
+    response.raise_for_status()
     all_foods = response.json()
 
-    # INSERT FUNCTION HERE
-    res = groupby_sum_totals(all_foods)
-    # groupby_count(foods_json)
+    # INSERT FUNCTIONS HERE
+    if agg_op == "sum":
+        res = groupby_sum_totals(all_foods)  # sum
+    elif agg_op == "count":
+        res = groupby_count(all_foods)  # count
+    elif agg_op == "avg":
+        res = groupby_avg(all_foods)  # avg
+    elif agg_op == "min":
+        # min - in tester
+        pass
+    elif agg_op == "max":
+        # max - in tester
+        pass
+    else:
+        return jsonify({"Error": "Invalid Aggregation Type"})
 
     aggregation_result = {
         "group_by": group_by_column,
-        f"{agg_operation}": res,  # insert val
+        f"{agg_op}": res,  # insert val
     }
-
-    # Return the pre-aggregated result as JSON
     return jsonify(aggregation_result)
