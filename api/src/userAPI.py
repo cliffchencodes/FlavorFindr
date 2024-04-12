@@ -1,19 +1,24 @@
 import requests
+import json
 from src.agg_functions import *
 from flask import Blueprint, request, jsonify
 
 
 userAPI = Blueprint("userAPI", __name__)
 DB_URL = "https://dsci551---oogabooga-default-rtdb.firebaseio.com/"  # change to one kelly made
-key = "corn"
+key = "b"
 
 
 # PUT method
 @userAPI.route("/add", methods=["PUT"])
 def create():
     try:
+        """
+        UI: [2 inputs: data: nutrition data to input --> {json}, id: name of food --> bread]
+        """
         data = request.json
         id = key
+        
         url = f"{DB_URL}foods/{id}.json"
         response = requests.put(url, json=data)
         response.raise_for_status()  # raise error if req not successful
@@ -26,7 +31,9 @@ def create():
 @userAPI.route("/list")
 def read():
     try:
-        response = requests.get(f"{DB_URL}foods.json")
+        url = f'{DB_URL}foods.json?orderBy=\"calcium\"&equalTo=0'
+        response = requests.get(url)
+        # response = requests.get(f"{DB_URL}foods.json")
         response.raise_for_status()  # raise error if req not successful
         all_foods = response.json()
         return jsonify(all_foods), 200
@@ -40,10 +47,14 @@ def update():
     try:
         data = request.json
 
-        # user inputs & check:
-        id = key  # will be user input
-        field1 = "food_group"  # change this value - UI
-        field1_val = data.get("food_group")  # change this value - UI
+        """
+        UI: [3 inputs: id: food to reference --> bread, field1: key to reference --> calcium, 
+                        field1_val: new value --> 4]
+        """
+        id = key 
+        field1 = "food_group" 
+        field1_val = data.get("food_group") 
+
         if not id or not field1_val:
             return jsonify({"error": "Food ID or Calcium value not provided"}), 400
 
@@ -60,22 +71,63 @@ def update():
 @userAPI.route("/delete", methods=["DELETE"])
 def delete():
     try:
-        id = key  # User input
-        url = f"{DB_URL}foods/{id}.json"
+        """
+        # UI 1: [1 input: id(s) to specify path --> bread OR bread/calcium]
+        # UI 2: [4 input: id(s) to specify path --> bread, filter field --> calcium, 
+        filter type --> [gt, lt, eq], value --> 5]
+        """
+        # id = key  # User input
+        id = key
+        filter_field = 'calcium'
+        filter_type = 'equalTo'  # possible values: equalTo, less (endAt), greater (startAt)
+        val_threshold = 0
+
+        # url = f"{DB_URL}foods.json"
+        url = f"{DB_URL}foods.json?orderBy=\"calcium\"&equalTo=0"
+        # url = f"{DB_URL}foods.json?orderBy=\"calcium\"&equalTo=0"
+        # query = {'orderBy': f"\"{filter_field}\"", filter_type: val_threshold}
         response = requests.delete(url)
+        # response = requests.delete(url, params=query)
         response.raise_for_status()  # Raise an error if the request was not successful
         return jsonify({"success": True}), 200
+
     except Exception as error:
         return f"An error occurred: {error}"
 
 
-# AGGREGATE method - WIP
+# ORDERBY method
+@userAPI.route("/orderby", methods=["GET"])
+def orderby():
+
+    # group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
+    # sb_cat = request.args.get("aggregation")  # TO ADD: user input agg type
+
+    # UI: [3 inputs: group by cat --> food_group, sort by cat --> fat, asc --> T/F]
+    group_by_column = "food_group"
+    sb_cat = "fat"
+    desc = True
+    output_list = []
+
+    url = f"{DB_URL}foods.json"
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an error if the request was not successful
+
+    sorted_df = dict(
+        sorted(response.json().items(), key=lambda x: x[1][sb_cat], reverse=desc)
+    )
+    for key, vals in sorted_df.items():
+        output_list.append({key: vals})
+    return jsonify(output_list)
+
+
+# AGGREGATE method
 @userAPI.route("/aggregate", methods=["GET"])
-def perform_aggregation():
+def aggregation():
 
     # group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
     # agg_operation = request.args.get("aggregation")  # TO ADD: user input agg type
 
+    # UI: [2 inputs: group by cat --> food_group, aggregation operation --> sum]
     group_by_column = "food_group"
     agg_op = "sum"
 
