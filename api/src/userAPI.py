@@ -5,13 +5,16 @@ from flask import Blueprint, request, jsonify
 
 
 userAPI = Blueprint("userAPI", __name__)
+
+# GLOBAL VARS:
 DATABASE_URLS = {
-    0: 'https://dsci551-final-db0-default-rtdb.firebaseio.com/' #'a-e',
-    1: 'https://dsci551-final-db1-default-rtdb.firebaseio.com/' #'f-j',
-    2: 'https://dsci551-final-db2-default-rtdb.firebaseio.com/' #'k-o',
-    3: 'https://dsci551-final-db3-default-rtdb.firebaseio.com/' #'p-t',
+    0: 'https://dsci551-final-db0-default-rtdb.firebaseio.com/', #'a-e',
+    1: 'https://dsci551-final-db1-default-rtdb.firebaseio.com/', #'f-j',
+    2: 'https://dsci551-final-db2-default-rtdb.firebaseio.com/', #'k-o',
+    3: 'https://dsci551-final-db3-default-rtdb.firebaseio.com/', #'p-t',
     4: 'https://dsci551-final-db4-default-rtdb.firebaseio.com/' #'u-z'
 }
+foodName = "b"
 
 def hashing(foodName):
     temp = 0
@@ -32,7 +35,6 @@ def hashing(foodName):
         print('Please input information under a valid food name. Must start with a letter.')
         return None
         
-key = "b"
 
 # PUT method
 @userAPI.route("/add", methods=["PUT"])
@@ -42,8 +44,8 @@ def create():
         UI: [2 inputs: data: nutrition data to input --> {json}, id: name of food --> bread]
         """
         data = request.json
-        id = key
-        hash_val = hashing(data["foodName"])
+        id = foodName
+        hash_val = hashing(data["foodName"])  # should be foodName, key for now
         
         url = f"{DATABASE_URLS[hash_val]}foods/{id}.json"
         response = requests.put(url, json=data)
@@ -57,6 +59,7 @@ def create():
 @userAPI.route("/list")
 def read():
     try:
+        hash_val = hashing(foodName)  # should be dynamic
         url = f'{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0'
         response = requests.get(url)
         # response = requests.get(f"{DATABASE_URLS[hash_val]}foods.json")
@@ -77,9 +80,10 @@ def update():
         UI: [3 inputs: id: food to reference --> bread, field1: key to reference --> calcium, 
                         field1_val: new value --> 4]
         """
-        id = key 
+        id = foodName 
         field1 = "food_group" 
         field1_val = data.get("food_group") 
+        hash_val = hashing(foodName)  # should be dynamic
 
         if not id or not field1_val:
             return jsonify({"error": "Food ID or Calcium value not provided"}), 400
@@ -103,10 +107,11 @@ def delete():
         filter type --> [gt, lt, eq], value --> 5]
         """
         # id = key  # User input
-        id = key
+        id = foodName
         filter_field = 'calcium'
         filter_type = 'equalTo'  # possible values: equalTo, less (endAt), greater (startAt)
         val_threshold = 0
+        hash_val = hashing(foodName)  # should be dynamic
 
         # url = f"{DATABASE_URLS[hash_val]}foods.json"
         url = f"{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0"
@@ -133,6 +138,7 @@ def orderby():
     sb_cat = "fat"
     desc = True
     output_list = []
+    hash_val = hashing(foodName)  # should be dynamic
 
     url = f"{DATABASE_URLS[hash_val]}foods.json"
     response = requests.get(url)
@@ -156,6 +162,7 @@ def aggregation():
     # UI: [2 inputs: group by cat --> food_group, aggregation operation --> sum]
     group_by_column = "food_group"
     agg_op = "sum"
+    hash_val = hashing(foodName)  # should be dynamic
 
     # aggregate data by querying from db
     response = requests.get(f"{DATABASE_URLS[hash_val]}foods.json")
