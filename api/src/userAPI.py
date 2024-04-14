@@ -5,9 +5,34 @@ from flask import Blueprint, request, jsonify
 
 
 userAPI = Blueprint("userAPI", __name__)
-DB_URL = "https://dsci551---oogabooga-default-rtdb.firebaseio.com/"  # change to one kelly made
-key = "b"
+DATABASE_URLS = {
+    0: 'https://dsci551-final-db0-default-rtdb.firebaseio.com/' #'a-e',
+    1: 'https://dsci551-final-db1-default-rtdb.firebaseio.com/' #'f-j',
+    2: 'https://dsci551-final-db2-default-rtdb.firebaseio.com/' #'k-o',
+    3: 'https://dsci551-final-db3-default-rtdb.firebaseio.com/' #'p-t',
+    4: 'https://dsci551-final-db4-default-rtdb.firebaseio.com/' #'u-z'
+}
 
+def hashing(foodName):
+    temp = 0
+    foodName = foodName.lower()
+    firstLetter = foodName[0]
+
+    if firstLetter >= 'a' and firstLetter <= 'e':
+        return 0
+    elif firstLetter >= 'f' and firstLetter <= 'j':
+        return 1
+    elif firstLetter >= 'k' and firstLetter <= 'o':
+        return 2
+    elif firstLetter >= 'p' and firstLetter <= 't':
+        return 3
+    elif firstLetter >= 'u' and firstLetter <= 'z':
+        return 4
+    else:
+        print('Please input information under a valid food name. Must start with a letter.')
+        return None
+        
+key = "b"
 
 # PUT method
 @userAPI.route("/add", methods=["PUT"])
@@ -18,8 +43,9 @@ def create():
         """
         data = request.json
         id = key
+        hash_val = hashing(data["foodName"])
         
-        url = f"{DB_URL}foods/{id}.json"
+        url = f"{DATABASE_URLS[hash_val]}foods/{id}.json"
         response = requests.put(url, json=data)
         response.raise_for_status()  # raise error if req not successful
         return jsonify({"success": True}), 200
@@ -31,9 +57,9 @@ def create():
 @userAPI.route("/list")
 def read():
     try:
-        url = f'{DB_URL}foods.json?orderBy=\"calcium\"&equalTo=0'
+        url = f'{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0'
         response = requests.get(url)
-        # response = requests.get(f"{DB_URL}foods.json")
+        # response = requests.get(f"{DATABASE_URLS[hash_val]}foods.json")
         response.raise_for_status()  # raise error if req not successful
         all_foods = response.json()
         return jsonify(all_foods), 200
@@ -58,7 +84,7 @@ def update():
         if not id or not field1_val:
             return jsonify({"error": "Food ID or Calcium value not provided"}), 400
 
-        url = f"{DB_URL}foods/{id}/{field1}.json"
+        url = f"{DATABASE_URLS[hash_val]}foods/{id}/{field1}.json"
 
         response = requests.put(url, json=field1_val)
         response.raise_for_status()  # Raise an error if the request was not successful
@@ -82,9 +108,9 @@ def delete():
         filter_type = 'equalTo'  # possible values: equalTo, less (endAt), greater (startAt)
         val_threshold = 0
 
-        # url = f"{DB_URL}foods.json"
-        url = f"{DB_URL}foods.json?orderBy=\"calcium\"&equalTo=0"
-        # url = f"{DB_URL}foods.json?orderBy=\"calcium\"&equalTo=0"
+        # url = f"{DATABASE_URLS[hash_val]}foods.json"
+        url = f"{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0"
+        # url = f"{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0"
         # query = {'orderBy': f"\"{filter_field}\"", filter_type: val_threshold}
         response = requests.delete(url)
         # response = requests.delete(url, params=query)
@@ -108,7 +134,7 @@ def orderby():
     desc = True
     output_list = []
 
-    url = f"{DB_URL}foods.json"
+    url = f"{DATABASE_URLS[hash_val]}foods.json"
     response = requests.get(url)
     response.raise_for_status()  # Raise an error if the request was not successful
 
@@ -132,7 +158,7 @@ def aggregation():
     agg_op = "sum"
 
     # aggregate data by querying from db
-    response = requests.get(f"{DB_URL}foods.json")
+    response = requests.get(f"{DATABASE_URLS[hash_val]}foods.json")
     response.raise_for_status()
     all_foods = response.json()
 
