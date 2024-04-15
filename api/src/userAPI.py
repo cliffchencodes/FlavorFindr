@@ -1,6 +1,8 @@
 import requests
 import json
 from src.agg_functions import *
+from src.del_post_functions import * 
+from src.get_functions import *
 from flask import Blueprint, request, jsonify
 
 
@@ -17,7 +19,6 @@ DATABASE_URLS = {
 foodName = "b"
 
 def hashing(foodName):
-    temp = 0
     foodName = foodName.lower()
     firstLetter = foodName[0]
 
@@ -58,14 +59,36 @@ def create():
 # GET Method
 @userAPI.route("/list")
 def read():
+    """
+    UI: [5 inputs: id: food to reference --> bread, 
+                        filt_type: filter type --> [greater, less, equal, None],
+                        filt_field: key to reference --> calcium, 
+                        filt_val: val to filter on --> 0
+                        ]
+    """
+
+    id = foodName
+    filt_type = 'equal'
+    filt_field = 'calcium'
+    filt_val = 0
+
     try:
         hash_val = hashing(foodName)  # should be dynamic
-        url = f'{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0'
-        response = requests.get(url)
-        # response = requests.get(f"{DATABASE_URLS[hash_val]}foods.json")
-        response.raise_for_status()  # raise error if req not successful
-        all_foods = response.json()
+        db_base = f"{DATABASE_URLS[hash_val]}"
+        if filt_type == 'equal':
+            getEqual(filt_field, filt_val, db_base)
+        elif filt_type == 'greater':
+            getGreater(filt_field, filt_val, db_base)
+        elif filt_type == 'lesser': 
+            getLesser(filt_field, filt_val, db_base)
+        elif filt_type == None:
+            url = f'{db_base}foods/{id}.json'
+            response = requests.get(url)
+            response.raise_for_status()  # raise error if req not successful
+            all_foods = response.json()
+        # if get not working, might need invalid input check
         return jsonify(all_foods), 200
+    
     except Exception as error:
         return f"An error occurred {error}"
 
@@ -77,22 +100,39 @@ def update():
         data = request.json
 
         """
-        UI: [3 inputs: id: food to reference --> bread, field1: key to reference --> calcium, 
-                        field1_val: new value --> 4]
+        UI: [5 inputs: id: food to reference --> bread, 
+                            filt_type: filter type --> [greater, less, equal, None],
+                            filt_field: key to reference --> calcium, 
+                            old_val: val to filter on --> 0, 
+                            new_val: new value --> 4]
         """
         id = foodName 
-        field1 = "food_group" 
-        field1_val = data.get("food_group") 
-        hash_val = hashing(foodName)  # should be dynamic
+        filt_type = 'equal'
+        filt_field = "food_group" 
+        old_val = 0
+        new_val = data.get("food_group") 
 
-        if not id or not field1_val:
+        # check for valid input
+        if not id or not new_val:
             return jsonify({"error": "Food ID or Calcium value not provided"}), 400
-
-        url = f"{DATABASE_URLS[hash_val]}foods/{id}/{field1}.json"
-
-        response = requests.put(url, json=field1_val)
-        response.raise_for_status()  # Raise an error if the request was not successful
+        
+        # update equal 
+        if filt_type == 'equal':
+            updateEqual(filt_field, old_val, new_val, DATABASE_URLS)
+        # update greater 
+        elif filt_type == 'greater':
+            updateGreater(filt_field, old_val, new_val, DATABASE_URLS)
+        # update less
+        elif filt_type == 'less':
+            updateLesser(filt_field, old_val, new_val, DATABASE_URLS)
+        # update only on field name
+        elif filt_type == None:
+            hash_val = hashing(foodName)  # should be dynamic
+            url = f"{DATABASE_URLS[hash_val]}foods/{id}/{filt_field}.json"
+            response = requests.put(url, json=new_val)
+            response.raise_for_status()  # Raise an error if the request was not successful
         return jsonify({"success": True}), 200
+    
     except Exception as error:
         return f"An error occurred: {error}"
 
@@ -104,26 +144,29 @@ def delete():
         """
         # UI 1: [1 input: id(s) to specify path --> bread OR bread/calcium]
         # UI 2: [4 input: id(s) to specify path --> bread, filter field --> calcium, 
-        filter type --> [gt, lt, eq], value --> 5]
+        filter type --> [greater, less, equal, None], value --> 5]
         """
-        # id = key  # User input
-        id = foodName
-        filter_field = 'calcium'
-        filter_type = 'equalTo'  # possible values: equalTo, less (endAt), greater (startAt)
-        val_threshold = 0
-        hash_val = hashing(foodName)  # should be dynamic
+        filt_field = 'calcium'
+        filt_type = 'equal'
+        val = 0
 
-        # url = f"{DATABASE_URLS[hash_val]}foods.json"
-        url = f"{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0"
-        # url = f"{DATABASE_URLS[hash_val]}foods.json?orderBy=\"calcium\"&equalTo=0"
-        # query = {'orderBy': f"\"{filter_field}\"", filter_type: val_threshold}
-        response = requests.delete(url)
-        # response = requests.delete(url, params=query)
-        response.raise_for_status()  # Raise an error if the request was not successful
+        if filt_type == 'equal':
+            deleteAll(filt_field, val, DATABASE_URLS)
+        elif filt_type == 'greater':
+            deleteGreater(filt_field, val, DATABASE_URLS)
+        elif filt_type == 'less':
+            deleteLesser(filt_field, val, DATABASE_URLS)
+        elif filt_type == None:
+            hash_val = hashing(foodName)  # should be dynamic
+            url = f'{DATABASE_URLS[hash_val]}foods/{filt_field}.json'
+            response = requests.delete(url)
+            response.raise_for_status()  # Raise an error if the request was not successful
+        else:
+            print("Please enter a valid comparison operator")
         return jsonify({"success": True}), 200
-
     except Exception as error:
         return f"An error occurred: {error}"
+
 
 
 # ORDERBY method
