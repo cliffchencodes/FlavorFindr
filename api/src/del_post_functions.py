@@ -93,8 +93,7 @@ def updateEqual(attribute, val, new, glb_db):
             data = response.json()
             for item in data:
                 data[item][attribute] = new
-                update = requests.put(f"{URL}/foods/{item}.json", json=data[item])
-    return
+                requests.put(f"{URL}/foods/{item}.json", json=data[item])
 
 
 # UPDATE GREATER TO
@@ -108,8 +107,7 @@ def updateGreater(attribute, val, new, glb_db):
             data = response.json()
             for item in data:
                 data[item][attribute] = new
-                update = requests.put(f"{URL}/foods/{item}.json", json=data[item])
-    return
+                requests.put(f"{URL}/foods/{item}.json", json=data[item])
 
 
 def updateLesser(attribute, val, new, glb_db):
@@ -122,5 +120,4 @@ def updateLesser(attribute, val, new, glb_db):
             data = response.json()
             for item in data:
                 data[item][attribute] = new
-                update = requests.put(f"{URL}/foods/{item}.json", json=data[item])
-    return
+                requests.put(f"{URL}/foods/{item}.json", json=data[item])

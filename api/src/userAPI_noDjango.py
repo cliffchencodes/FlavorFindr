@@ -126,43 +126,47 @@ def read():
         return f"An error occurred {error}"
 
 
-# POST method
+# POST method - DONE
 @userAPI.route("/update", methods=["POST"])
 def update():
     try:
-        data = request.json
-
         """
         UI: [5 inputs: id: food to reference --> bread, 
-                            filt_type: filter type --> [greater, less, equal, None],
-                            filt_field: key to reference --> calcium, 
-                            old_val: val to filter on --> 0, 
-                            new_val: new value --> 4]
+                        filt_type: filter type --> [greater, less, equal, None],
+                        filt_field: key to reference --> calories, 
+                        old_val: val to filter on --> 0, 
+                        new_val: new value --> 4]
         """
-        id = foodName
-        filt_type = 'equal'
-        filt_field = "food_group" 
-        old_val = 0
-        new_val = data.get("food_group") 
+        food_name =  request.form.get("id")
+        filt_field = request.form.get('filt_field')
+        filt_type = request.form.get('filt_type') 
+        filt_type = None if filt_type == "none" else filt_type
+        old_val = request.form.get('old_val')
+        new_val = request.form.get('new_val')
 
-        # check for valid input
-        if not id or not new_val:
-            return jsonify({"error": "Food ID or Calcium value not provided"}), 400
-        # update equal 
-        if filt_type == 'equal':
-            updateEqual(filt_field, old_val, new_val, DATABASE_URLS)
-        # update greater 
-        elif filt_type == 'greater':
-            updateGreater(filt_field, old_val, new_val, DATABASE_URLS)
-        # update less
-        elif filt_type == 'less':
-            updateLesser(filt_field, old_val, new_val, DATABASE_URLS)
-        # update only on field name
-        elif filt_type == None:
-            hash_val = hashing(foodName)  # should be dynamic
-            url = f"{DATABASE_URLS[hash_val]}foods/{id}/{filt_field}.json"
+        # name-based food search: 
+        if food_name:
+            hash_val = hashing(food_name)  # should be dynamic
+            url = f"{DATABASE_URLS[hash_val]}foods/{food_name}/{filt_field}.json"
             response = requests.put(url, json=new_val)
-            response.raise_for_status()  # Raise an error if the request was not successful
+            response.raise_for_status()
+
+        else:
+            if filt_field and filt_type and old_val and new_val:
+                # update equal 
+                if filt_type == 'equal':
+                    updateEqual(filt_field, old_val, new_val, DATABASE_URLS)
+                
+                # update greater 
+                elif filt_type == 'greater':
+                    updateGreater(filt_field, old_val, new_val, DATABASE_URLS)
+                
+                # update less
+                elif filt_type == 'less':
+                    updateLesser(filt_field, old_val, new_val, DATABASE_URLS)
+            else:
+                raise Exception("Invalid input, please double check")
+
         return jsonify({"success": True}), 200
     
     except Exception as error:
@@ -201,26 +205,23 @@ def delete():
 
 
 
-# ORDERBY method
+# ORDERBY method - Done
 @userAPI.route("/orderby", methods=["GET"])
 def orderby():
-
-    # group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
-    # sb_cat = request.args.get("aggregation")  # TO ADD: user input agg type
-
     # UI: [3 inputs: group by cat --> food_group, sort by cat --> fat, asc --> T/F]
-    group_by_column = "food_group"
-    sb_cat = "fat"
-    desc = True
-    output_list = []
-    hash_val = hashing(foodName)  # should be dynamic
+    sb_cat = request.args.get("agg_field") 
+    desc = True if request.args.get("descending") else False
 
-    url = f"{DATABASE_URLS[hash_val]}foods.json"
-    response = requests.get(url)
-    response.raise_for_status()  # Raise an error if the request was not successful
+    output_list = []
+    out_dict = {}
+    for i in range(5):
+        url = f"{DATABASE_URLS[i]}foods.json"
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error if the request was not successful
+        out_dict.update(response.json())
 
     sorted_df = dict(
-        sorted(response.json().items(), key=lambda x: x[1][sb_cat], reverse=desc)
+        sorted(out_dict.items(), key=lambda x: x[1][sb_cat], reverse=desc)
     )
     for key, vals in sorted_df.items():
         output_list.append({key: vals})

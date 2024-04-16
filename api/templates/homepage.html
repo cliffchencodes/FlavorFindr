@@ -65,8 +65,30 @@
     <form action="/update" method="POST">
         <h2>Update</h2>
         <label for="id">Food Name:</label>
-        <input type="text" id="id" name="id" required>
-        <!-- Add other input fields for filtering and update data -->
+        <input type="text" id="id" name="id">
+
+        <label for="filt_field">Filter Field:</label>
+        <select id="filt_field" name="filt_field">
+            <option value="calories">Calories</option>
+            <option value="carbohydrates">Carbohydrates</option>
+            <option value="total_fat">Total Fat</option>
+            <option value="protein">Protein</option>
+        </select>
+
+        <label for="filt_type">Filter Type:</label>
+        <select id="filt_type" name="filt_type">
+            <option value="none">*Exclude This Field*</option>
+            <option value="equal">Equals</option>
+            <option value="greater">Greater Than</option>
+            <option value="less">Less Than</option>
+        </select>
+
+        <label for="old_val">Old Value:</label>
+        <input type="text" id="old_val" name="old_val" required>
+
+        <label for="new_val">New Value:</label>
+        <input type="text" id="new_val" name="new_val" required>
+
         <button type="submit">Update</button>
     </form>
 
@@ -79,25 +101,7 @@
         <button type="submit">Delete</button>
     </form>
 
-    <!-- Aggregation Form -->
-    <!-- <form action="/aggregate" method="GET">
-        <h2>Aggregate</h2>
-        <label for="group_by">Group By Category:</label>
-        <select id="agg_cat" name="agg_cat">
-            <option value="restaurant_name">Restaurant</option>
-        </select><br>
 
-        <label for="agg_operation">Aggregation Operation:</label>
-        <select id="agg_operation" name="agg_operation">
-            <option value="sum">Sum</option>
-            <option value="count">Count</option>
-            <option value="avg">Average</option>
-            <option value="min">Minimum</option>
-            <option value="max">Maximum</option>
-        </select>
-
-        <button type="submit">Submit</button>
-    </form> -->
     <form action="/aggregate" method="GET">
         <h2>Aggregate</h2>
         <label for="group_by">Group By Category:</label>
@@ -139,6 +143,28 @@
             }
         }
     </script>
+
+    <form action="/orderby" method="get">
+        <h2>Order By</h2>
+        <!-- <label for="group_by_column">Group By Column:</label>
+        <select id="agg_cat" name="agg_cat">
+            <option value="no_cat">No Category</option>
+            <option value="restaurant_name">Restaurant</option>
+        </select> -->
+
+        <label for="sb_cat">Sort By Column:</label>
+        <select id="agg_field" name="agg_field">
+            <option value="calories">Calories</option>
+            <option value="carbohydrates">Carbohydrates</option>
+            <option value="total_fat">Total Fat</option>
+            <option value="protein">Protein</option>
+        </select>
+
+        <label for="descending">Descending:</label>
+        <input type="checkbox" id="descending" name="descending">
+
+        <button type="submit">Submit</button>
+    </form>
 
 </body>
 
