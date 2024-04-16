@@ -59,3 +59,4 @@ Testing:
 NICE TO HAVE:
 - order by for aggregate functions 
 - dynamic fields for update (i.e. remove filt_type and old_val when using name update)
+- landing pages for each operation after completed w/ return to homepage button
