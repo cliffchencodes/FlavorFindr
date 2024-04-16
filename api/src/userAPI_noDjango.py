@@ -44,18 +44,18 @@ def create():
         # Process form data
         restaurant_name = request.form.get('restaurant_name')
         food_name = request.form.get('food_name')
-        calories = int(request.form.get('calories'))
-        protein = int(request.form.get('protein'))
-        total_fat = int(request.form.get('total_fat'))
-        carbohydrates = int(request.form.get('carbohydrates'))
+        calories = request.form.get('calories')
+        protein = request.form.get('protein')
+        total_fat = request.form.get('total_fat')
+        carbohydrates = request.form.get('carbohydrates')
 
         food_data = {
         "restaurant_name": restaurant_name,
         "name": food_name,
-        "calories": calories,
-        "protein": protein,
-        "total_fat": total_fat,
-        "carbohydrates": carbohydrates
+        "calories": int(calories),
+        "protein": int(protein),
+        "total_fat": int(total_fat),
+        "carbohydrates": int(carbohydrates)
         }
 
         hash_val = hashing(food_name)
@@ -79,17 +79,18 @@ def read():
     """
 
     food_name = request.args.get("food_name")
-    filt_type = request.args.get('filt_type')
-    filt_type = filt_type if filt_type != "" else None  # error handling
-    filt_field = request.args.get('filt_field')
-    filt_field = filt_field if filt_field != "" else None  # error handling
-    filt_val = request.args.get('filt_val')
-    filt_val = filt_val if filt_val != "" else None  # error handling
-    
+    rest_name = request.args.get("restaurant_name")
+    carb_filt = request.args.get("carb_filt_type")
+    carb_val = request.args.get("carbs")
+    cal_filt = request.args.get("cal_filt_type")
+    cal_val = request.args.get("cals")
+    fat_filt = request.args.get("fat_filt_type")
+    fat_val = request.args.get("total_fat")
+    prot_filt = request.args.get("pro_filt_type")
+    prot_val = request.args.get("protein")
     try:
-
         # name-based food search: 
-        if food_name:
+        if food_name != "":
             hash_val = hashing(food_name)  # should be dynamic
             db_base = f"{DATABASE_URLS[hash_val]}"
             url = f'{db_base}foods/{food_name}.json'
@@ -98,26 +99,37 @@ def read():
             all_foods = response.json()
         
         else:
+            filters = []
+            for val, filt, nutri in zip([carb_val, cal_val, fat_val, prot_val], 
+                                [carb_filt, cal_filt, fat_filt, prot_filt],
+                                ['carbohydrates', 'calories', 'total_fat', 'protein']):
+                if filt != "":
+                    filters.append((val, filt, nutri))
+                
             # number-based search
-            if filt_type and filt_field and filt_val: 
+            print(f"filters: {filters}")
+            if filters or rest_name: 
                 all_foods = {}
                 for i in range(5):
-                    db_base = f"{DATABASE_URLS[i]}"
-
-                    # all foods equal to x
-                    if filt_type == 'equal':
-                        tmp_foods = getEqual(filt_field, filt_val, db_base)
-
-                    # all foods greater than x 
-                    elif filt_type == 'greater':
-                        tmp_foods = getGreater(filt_field, filt_val, db_base)
-
-                    # all foods less than y
-                    elif filt_type == 'lesser': 
-                        tmp_foods = getLesser(filt_field, filt_val, db_base)
+                    url = f"{DATABASE_URLS[i]}foods.json?"
+                    if rest_name != "":
+                        url += f'orderBy="restaurant_name"&equalTo="{rest_name}"&'
+                    for val, filt, nutri in filters:
+                        if filt == 'equal':
+                            url += f'orderBy="{nutri}"&equalTo={int(val)}&' 
+                        elif filt == 'greater':
+                            url += f'orderBy="{nutri}"&startAt={int(val) + 1}&'
+                        elif filt == 'lesser':
+                            url += f'orderBy="{nutri}"&endAt={int(val) - 1}&'
+                    url = url.rstrip('&')
+                    print(url)
+                    response = requests.get(url)
+                    response.raise_for_status()  # raise error if req not successful
+                    # print(response.json())
+                    tmp_foods = response.json()
                     all_foods.update(tmp_foods)
             else:
-                raise Exception ("Invalid input combination")
+                raise Exception ("Please enter valid search inputs")
 
         # if get not working, might need invalid input check
         return jsonify(all_foods), 200
@@ -174,7 +186,7 @@ def update():
 
 
 # DELETE method
-@userAPI.route("/delete", methods=["DELETE"])
+@userAPI.route("/delete", methods=["POST", "DELETE"])
 def delete():
     try:
         """
@@ -182,23 +194,27 @@ def delete():
         # UI 2: [4 input: id(s) to specify path --> bread, filter field --> calcium, 
         filter type --> [greater, less, equal, None], value --> 5]
         """
-        filt_field = ''
-        filt_type = None
-        val = 0
+        food_name = request.form.get("id")
+        filt_field = request.form.get('filt_field')
+        filt_type = request.form.get('filt_type')
+        filt_val = request.form.get('filt_val')
 
-        if filt_type == 'equal':
-            deleteAll(filt_field, val, DATABASE_URLS)
-        elif filt_type == 'greater':
-            deleteGreater(filt_field, val, DATABASE_URLS)
-        elif filt_type == 'less':
-            deleteLesser(filt_field, val, DATABASE_URLS)
-        elif filt_type == None:
-            hash_val = hashing(foodName)  # should be dynamic
-            url = f'{DATABASE_URLS[hash_val]}foods/{filt_field}.json'
+        if food_name:
+            hash_val = hashing(food_name)  # should be dynamic
+            url = f"{DATABASE_URLS[hash_val]}foods/{food_name}.json"
             response = requests.delete(url)
-            response.raise_for_status()  # Raise an error if the request was not successful
+            print('deleted')
+            return response.raise_for_status()
         else:
-            print("Please enter a valid comparison operator")
+            if filt_field != "" and filt_type != "" and filt_val != "":
+                if filt_type == 'equal':
+                    deleteAll(filt_field, filt_val, DATABASE_URLS)
+                elif filt_type == 'greater':
+                    deleteGreater(filt_field, filt_val, DATABASE_URLS)
+                elif filt_type == 'less':
+                    deleteLesser(filt_field, filt_val, DATABASE_URLS)
+                else:
+                    print("Please enter a valid comparison operator")
         return jsonify({"success": True}), 200
     except Exception as error:
         return f"An error occurred: {error}"
@@ -208,7 +224,7 @@ def delete():
 # ORDERBY method - Done
 @userAPI.route("/orderby", methods=["GET"])
 def orderby():
-    # UI: [3 inputs: group by cat --> food_group, sort by cat --> fat, asc --> T/F]
+    # UI: [2 inputs:  sort by cat --> fat, asc --> T/F]
     sb_cat = request.args.get("agg_field") 
     desc = True if request.args.get("descending") else False
 
@@ -219,9 +235,9 @@ def orderby():
         response = requests.get(url)
         response.raise_for_status()  # Raise an error if the request was not successful
         out_dict.update(response.json())
-
+    print(f"{out_dict}\n\n")
     sorted_df = dict(
-        sorted(out_dict.items(), key=lambda x: x[1][sb_cat], reverse=desc)
+        sorted(out_dict.items(), key=lambda x: int(x[1][sb_cat]), reverse=desc)
     )
     for key, vals in sorted_df.items():
         output_list.append({key: vals})
