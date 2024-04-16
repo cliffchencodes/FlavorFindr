@@ -16,7 +16,7 @@ DATABASE_URLS = {
     3: 'https://dsci551-final-db3-default-rtdb.firebaseio.com/', #'p-t',
     4: 'https://dsci551-final-db4-default-rtdb.firebaseio.com/' #'u-z'
 }
-foodName = "b"
+foodName = "Quarter Pounder Bacon"
 
 def hashing(foodName):
     foodName = foodName.lower()
@@ -44,9 +44,9 @@ def create():
         """
         UI: [2 inputs: data: nutrition data to input --> {json}, id: name of food --> bread]
         """
-        data = request.json
-        id = foodName
-        hash_val = hashing(data["foodName"])  # should be foodName, key for now
+        data = request.args.get("food_data")
+        id = request.args.get("food_name")
+        hash_val = hashing(id)
         
         url = f"{DATABASE_URLS[hash_val]}foods/{id}.json"
         response = requests.put(url, json=data)
@@ -67,20 +67,24 @@ def read():
                         ]
     """
 
-    id = foodName
-    filt_type = 'equal'
-    filt_field = 'calcium'
-    filt_val = 0
-
+    # id = ''
+    # filt_type = None
+    # filt_field = 'calcium'
+    # filt_val = 3
+    id = request.args.get("id")
+    filt_type = request.args.get('filt_type')
+    filt_field = request.args.get('filt_field')
+    filt_val = request.args.get('filt_val')
+    
     try:
         hash_val = hashing(foodName)  # should be dynamic
         db_base = f"{DATABASE_URLS[hash_val]}"
         if filt_type == 'equal':
-            getEqual(filt_field, filt_val, db_base)
+            all_foods = getEqual(filt_field, filt_val, db_base)
         elif filt_type == 'greater':
-            getGreater(filt_field, filt_val, db_base)
+            all_foods = getGreater(filt_field, filt_val, db_base)
         elif filt_type == 'lesser': 
-            getLesser(filt_field, filt_val, db_base)
+            all_foods = getLesser(filt_field, filt_val, db_base)
         elif filt_type == None:
             url = f'{db_base}foods/{id}.json'
             response = requests.get(url)
@@ -106,7 +110,7 @@ def update():
                             old_val: val to filter on --> 0, 
                             new_val: new value --> 4]
         """
-        id = foodName 
+        id = foodName
         filt_type = 'equal'
         filt_field = "food_group" 
         old_val = 0
@@ -115,7 +119,6 @@ def update():
         # check for valid input
         if not id or not new_val:
             return jsonify({"error": "Food ID or Calcium value not provided"}), 400
-        
         # update equal 
         if filt_type == 'equal':
             updateEqual(filt_field, old_val, new_val, DATABASE_URLS)
@@ -146,8 +149,8 @@ def delete():
         # UI 2: [4 input: id(s) to specify path --> bread, filter field --> calcium, 
         filter type --> [greater, less, equal, None], value --> 5]
         """
-        filt_field = 'calcium'
-        filt_type = 'equal'
+        filt_field = ''
+        filt_type = None
         val = 0
 
         if filt_type == 'equal':
