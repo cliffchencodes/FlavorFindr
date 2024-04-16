@@ -52,3 +52,10 @@ Testing:
 	Perform manual testing to ensure the application functions correctly and meets the requirements.
 
 
+
+
+
+
+NICE TO HAVE:
+- order by for aggregate functions 
+- dynamic fields for update (i.e. remove filt_type and old_val when using name update)
