@@ -37,27 +37,38 @@ def hashing(foodName):
         return None
         
 
-# PUT method
-@userAPI.route("/add", methods=["PUT"])
+# PUT method - DONE
+@userAPI.route("/add", methods=["GET", "POST"])
 def create():
-    try:
-        """
-        UI: [2 inputs: data: nutrition data to input --> {json}, id: name of food --> bread]
-        """
-        data = request.args.get("food_data")
-        id = request.args.get("food_name")
-        hash_val = hashing(id)
-        
-        url = f"{DATABASE_URLS[hash_val]}foods/{id}.json"
-        response = requests.put(url, json=data)
+    if request.method == "POST":
+        # Process form data
+        restaurant_name = request.form.get('restaurant_name')
+        food_name = request.form.get('food_name')
+        calories = int(request.form.get('calories'))
+        protein = int(request.form.get('protein'))
+        total_fat = int(request.form.get('total_fat'))
+        carbohydrates = int(request.form.get('carbohydrates'))
+
+        food_data = {
+        "restaurant_name": restaurant_name,
+        "name": food_name,
+        "calories": calories,
+        "protein": protein,
+        "total_fat": total_fat,
+        "carbohydrates": carbohydrates
+        }
+
+        hash_val = hashing(food_name)
+        url = f"{DATABASE_URLS[hash_val]}foods/{food_name}.json"
+        response = requests.put(url, json=food_data)
         response.raise_for_status()  # raise error if req not successful
         return jsonify({"success": True}), 200
-    except Exception as error:
-        return f"An error occurred: {error}"
+    else:
+        return render_template("create.html")
 
 
-# GET Method
-@userAPI.route("/list")
+# GET Method - DONE 
+@userAPI.route("/list", methods=['GET'])
 def read():
     """
     UI: [5 inputs: id: food to reference --> bread, 
@@ -66,27 +77,48 @@ def read():
                         filt_val: val to filter on --> 0
                         ]
     """
-    food_name = request.args.get("id")
-    filt_type = request.args.get('filt_type')
-    filt_field = request.args.get('filt_field')
-    filt_val = request.args.get('filt_val')
 
-    print(food_name)
+    food_name = request.args.get("food_name")
+    filt_type = request.args.get('filt_type')
+    filt_type = filt_type if filt_type != "" else None  # error handling
+    filt_field = request.args.get('filt_field')
+    filt_field = filt_field if filt_field != "" else None  # error handling
+    filt_val = request.args.get('filt_val')
+    filt_val = filt_val if filt_val != "" else None  # error handling
     
     try:
-        hash_val = hashing(foodName)  # should be dynamic
-        db_base = f"{DATABASE_URLS[hash_val]}"
-        if filt_type == 'equal':
-            all_foods = getEqual(filt_field, filt_val, db_base)
-        elif filt_type == 'greater':
-            all_foods = getGreater(filt_field, filt_val, db_base)
-        elif filt_type == 'lesser': 
-            all_foods = getLesser(filt_field, filt_val, db_base)
-        elif filt_type == None:
-            url = f'{db_base}foods/{id}.json'
+
+        # name-based food search: 
+        if food_name:
+            hash_val = hashing(food_name)  # should be dynamic
+            db_base = f"{DATABASE_URLS[hash_val]}"
+            url = f'{db_base}foods/{food_name}.json'
             response = requests.get(url)
             response.raise_for_status()  # raise error if req not successful
             all_foods = response.json()
+        
+        else:
+            # number-based search
+            if filt_type and filt_field and filt_val: 
+                all_foods = {}
+                for i in range(5):
+                    db_base = f"{DATABASE_URLS[i]}"
+
+                    # all foods equal to x
+                    if filt_type == 'equal':
+                        tmp_foods = getEqual(filt_field, filt_val, db_base)
+
+                    # all foods greater than x 
+                    elif filt_type == 'greater':
+                        tmp_foods = getGreater(filt_field, filt_val, db_base)
+
+                    # all foods less than y
+                    elif filt_type == 'lesser': 
+                        tmp_foods = getLesser(filt_field, filt_val, db_base)
+                    all_foods.update(tmp_foods)
+            else:
+                raise Exception ("Invalid input combination")
+
         # if get not working, might need invalid input check
         return jsonify(all_foods), 200
     
@@ -195,41 +227,39 @@ def orderby():
     return jsonify(output_list)
 
 
-# AGGREGATE method
+# AGGREGATE method - DONE
 @userAPI.route("/aggregate", methods=["GET"])
 def aggregation():
 
-    # group_by_column = request.args.get("group_by")  # TO ADD: user input group by col
-    # agg_operation = request.args.get("aggregation")  # TO ADD: user input agg type
-
     # UI: [2 inputs: group by cat --> food_group, aggregation operation --> sum]
-    group_by_column = "food_group"
-    agg_op = "sum"
-    hash_val = hashing(foodName)  # should be dynamic
+    group_by_column = request.args.get("agg_cat")
+    agg_op = request.args.get("agg_operation")
 
-    # aggregate data by querying from db
-    response = requests.get(f"{DATABASE_URLS[hash_val]}foods.json")
-    response.raise_for_status()
-    all_foods = response.json()
+    all_foods = {}
+
+    for i in range(5):
+        response = requests.get(f"{DATABASE_URLS[i]}foods.json")
+        response.raise_for_status()
+        all_foods.update(response.json())
 
     # INSERT FUNCTIONS HERE
     if agg_op == "sum":
-        res = groupby_sum_totals(all_foods)  # sum
+        res = groupby_sum_totals(all_foods, group_by_column)  # sum
     elif agg_op == "count":
-        res = groupby_count(all_foods)  # count
+        res = groupby_count(all_foods, group_by_column)  # count
     elif agg_op == "avg":
-        res = groupby_avg(all_foods)  # avg
+        res = groupby_avg(all_foods, group_by_column)  # avg
     elif agg_op == "min":
-        # min - in tester
-        pass
+        min_cat = request.args.get("agg_field")
+        res = min_food(all_foods, group_by_column, min_cat)
     elif agg_op == "max":
-        # max - in tester
-        pass
+        max_cat = request.args.get("agg_field")
+        res = max_food(all_foods, group_by_column, max_cat)
     else:
         return jsonify({"Error": "Invalid Aggregation Type"})
 
     aggregation_result = {
         "group_by": group_by_column,
-        f"{agg_op}": res,  # insert val
+        f"{agg_op}": res,  
     }
     return jsonify(aggregation_result)

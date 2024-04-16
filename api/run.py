@@ -1,11 +1,17 @@
-from src import create_app
+from flask import Flask, render_template
 
-app = create_app()
+# from src import create_app
+from src.userAPI_noDjango import userAPI
+
+app = Flask(__name__, template_folder="templates")
+app.register_blueprint(userAPI)
+
+# app = create_app()
 
 
 @app.route("/")
-def index():
-    return "Welcome to our homepage"
+def homepage():
+    return render_template("homepage.html")
 
 
 if __name__ == "__main__":

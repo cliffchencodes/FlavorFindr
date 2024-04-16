@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operations</title>
+</head>
+
+<body>
+    <h1>CRUD Operations</h1>
+
+    <!-- Create Form -->
+    <form action="/add" method="POST">
+        <h2>Create</h2>
+        <label for="restaurant_name">Restaurant Name:</label>
+        <input type="text" id="restaurant_name" name="restaurant_name" required>
+
+        <label for="food_name">Food Name:</label>
+        <input type="text" id="food_name" name="food_name" required><br>
+
+        <label for="calories">Calories:</label>
+        <input type="number" id="calories" name="calories" required>
+
+        <label for="protein">Protein:</label>
+        <input type="number" id="protein" name="protein" required><br>
+
+        <label for="total_fat">Total Fat:</label>
+        <input type="number" id="total_fat" name="total_fat" required>
+
+        <label for="carbohydrates">Carbohydrates:</label>
+        <input type="number" id="carbohydrates" name="carbohydrates" required><br>
+
+        <button type="submit">Create</button>
+    </form>
+
+    <!-- Read Form -->
+    <form action="/list" method="GET">
+        <h2>Read</h2>
+        <label for="food_name">Food Name:</label>
+        <input type="text" id="food_name" name="food_name"><br>
+        <!-- <label for="toggle_checkbox">Include in Query:</label> -->
+        <!-- <input type="checkbox" id="toggle_checkbox" name="toggle_checkbox"><br> -->
+
+        <label for="filt_field">Filter Field:</label>
+        <input type="text" id="filt_field" name="filt_field"><br>
+
+        <!-- <label for="filt_type">Filter Type:</label>
+        <input type="text" id="filt_type" name="filt_type"><br> -->
+        <label for="filt_type">Filter Type:</label>
+        <select id="filt_type" name="filt_type">
+            <option value="">*Exclude This Field*</option>
+            <option value="greater">Greater Than</option>
+            <option value="less">Less Than</option>
+            <option value="equal">Equal To</option>
+        </select><br>
+
+        <label for="filt_val">Filter Value:</label>
+        <input type="text" id="filt_val" name="filt_val"><br>
+
+        <button type="submit">Read</button>
+    </form>
+
+    <!-- Update Form -->
+    <form action="/update" method="POST">
+        <h2>Update</h2>
+        <label for="id">Food Name:</label>
+        <input type="text" id="id" name="id" required>
+        <!-- Add other input fields for filtering and update data -->
+        <button type="submit">Update</button>
+    </form>
+
+    <!-- Delete Form -->
+    <form action="/delete" method="POST">
+        <h2>Delete</h2>
+        <label for="id">Food Name:</label>
+        <input type="text" id="id" name="id" required>
+        <!-- Add other input fields for filtering -->
+        <button type="submit">Delete</button>
+    </form>
+
+    <!-- Aggregation Form -->
+    <!-- <form action="/aggregate" method="GET">
+        <h2>Aggregate</h2>
+        <label for="group_by">Group By Category:</label>
+        <select id="agg_cat" name="agg_cat">
+            <option value="restaurant_name">Restaurant</option>
+        </select><br>
+
+        <label for="agg_operation">Aggregation Operation:</label>
+        <select id="agg_operation" name="agg_operation">
+            <option value="sum">Sum</option>
+            <option value="count">Count</option>
+            <option value="avg">Average</option>
+            <option value="min">Minimum</option>
+            <option value="max">Maximum</option>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form> -->
+    <form action="/aggregate" method="GET">
+        <h2>Aggregate</h2>
+        <label for="group_by">Group By Category:</label>
+        <select id="agg_cat" name="agg_cat">
+            <option value="restaurant_name">Restaurant</option>
+        </select><br>
+
+        <label for="agg_operation">Aggregation Operation:</label>
+        <select id="agg_operation" name="agg_operation" onchange="showAggregationField()">
+            <option value="sum">Sum</option>
+            <option value="count">Count</option>
+            <option value="avg">Average</option>
+            <option value="min">Minimum</option>
+            <option value="max">Maximum</option>
+        </select>
+
+        <div id="aggregation_field" style="display: none;">
+            <label for="agg_field">Aggregation Field:</label>
+            <select id="agg_field" name="agg_field">
+                <option value="calories">Calories</option>
+                <option value="carbohydrates">Carbohydrates</option>
+                <option value="total_fat">Total Fat</option>
+                <option value="protein">Protein</option>
+            </select>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function showAggregationField() {
+            var operation = document.getElementById("agg_operation").value;
+            var fieldDropdown = document.getElementById("aggregation_field");
+
+            if (operation == "min" || operation == "max") {
+                fieldDropdown.style.display = "block";
+            } else {
+                fieldDropdown.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

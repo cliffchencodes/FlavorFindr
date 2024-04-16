@@ -5,7 +5,8 @@ def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "password"  # change
 
-    from .userAPI import userAPI
+    # from .userAPI import userAPI
+    from .userAPI_noDjango import userAPI
 
     app.register_blueprint(userAPI, url_prefix="/foods")
 
