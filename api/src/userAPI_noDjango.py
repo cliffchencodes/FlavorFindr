@@ -62,9 +62,10 @@ def create():
         url = f"{DATABASE_URLS[hash_val]}foods/{food_name}.json"
         response = requests.put(url, json=food_data)
         response.raise_for_status()  # raise error if req not successful
-        return jsonify({"success": True}), 200
+        # return jsonify({"success": True}), 200
+        return render_template('success.html')
     else:
-        return render_template("create.html")
+        return render_template("failure.html")
 
 
 # GET Method - DONE 
@@ -128,11 +129,14 @@ def read():
                     # print(response.json())
                     tmp_foods = response.json()
                     all_foods.update(tmp_foods)
+                    items = [v for k, v in all_foods.items()]
             else:
-                raise Exception ("Please enter valid search inputs")
+                # raise Exception ("Please enter valid search inputs")
+                return render_template("failure.html")
 
         # if get not working, might need invalid input check
-        return jsonify(all_foods), 200
+        #return jsonify(all_foods), 200
+        return render_template('query.html', items=items)
     
     except Exception as error:
         return f"An error occurred {error}"
@@ -178,10 +182,12 @@ def update():
                     updateLesser(filt_field, old_val, new_val, DATABASE_URLS)
             else:
                 raise Exception("Invalid input, please double check")
-        return jsonify({"success": True}), 200
-    
+        # return jsonify({"success": True}), 200
+        return render_template('success.html')
+
     except Exception as error:
-        return f"An error occurred: {error}"
+        # return f"An error occurred: {error}"
+        return render_template("failure.html")
 
 
 # DELETE method - DONE
@@ -214,9 +220,11 @@ def delete():
                     deleteLesser(filt_field, filt_val, DATABASE_URLS)
                 else:
                     print("Please enter a valid comparison operator")
-        return jsonify({"success": True}), 200
+        # return jsonify({"success": True}), 200
+        return render_template('success.html')
     except Exception as error:
-        return f"An error occurred: {error}"
+        # return f"An error occurred: {error}"
+        return render_template("failure.html")
 
 
 
@@ -240,7 +248,9 @@ def orderby():
     )
     for key, vals in sorted_df.items():
         output_list.append({key: vals})
-    return jsonify(output_list)
+
+    # return jsonify(output_list)
+    return render_template('query.html', items=output_list)
 
 
 # AGGREGATE method - DONE
@@ -272,10 +282,10 @@ def aggregation():
         max_cat = request.args.get("agg_field")
         res = max_food(all_foods, group_by_column, max_cat)
     else:
-        return jsonify({"Error": "Invalid Aggregation Type"})
+        return jsonify({"Error": "Invalid Aggregation Type"}), 400
 
-    aggregation_result = {
-        "group_by": group_by_column,
-        f"{agg_op}": res,  
-    }
-    return jsonify(aggregation_result), 200
+    #return jsonify(aggregation_result), 200
+    return render_template('groupby.html',
+                           grouped_data=res,
+                           group_by_field=group_by_column,
+                           aggregate_function=agg_op)
