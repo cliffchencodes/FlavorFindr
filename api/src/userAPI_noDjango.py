@@ -68,7 +68,7 @@ def create():
         return render_template("failure.html")
 
 
-# GET Method - DONE 
+# GET Method - NEED TO ADJUST FILTERING - ONLY 1 FILTER CONDITION SENT TO FIREBASE - NEED TO DO REST MANUALLY 
 @userAPI.route("/list", methods=['GET'])
 def read():
     """
@@ -110,32 +110,34 @@ def read():
                     filters.append((val, filt, nutri))
                 
             # number-based search
-            print(f"filters: {filters}")
+            print(f"\n\nfilters: {filters}\n\n")
             if filters or rest_name: 
                 all_foods = {}
                 for i in range(5):
                     url = f"{DATABASE_URLS[i]}foods.json?"
-                    if rest_name != "":
-                        url += f'orderBy="restaurant_name"&equalTo="{rest_name}"&'
-                    for val, filt, nutri in filters:
-                        if filt == 'equal':
-                            url += f'orderBy="{nutri}"&equalTo={int(val)}&' 
-                        elif filt == 'greater':
-                            url += f'orderBy="{nutri}"&startAt={int(val) + 1}&'
-                        elif filt == 'lesser':
-                            url += f'orderBy="{nutri}"&endAt={int(val) - 1}&'
-                    url = url.rstrip('&')
-                    print(url)
-                    response = requests.get(url)
-                    response.raise_for_status()  # raise error if req not successful
-                    # print(response.json())
-                    tmp_foods = response.json()
-                    all_foods.update(tmp_foods)
+                    try:
+                        if rest_name != "":
+                            url += f'orderBy="restaurant_name"&equalTo="{rest_name}"&'
+                        for val, filt, nutri in filters:
+                            if filt == 'equal':
+                                url += f'orderBy="{nutri}"&equalTo={int(val)}&' 
+                            elif filt == 'greater':
+                                url += f'orderBy="{nutri}"&startAt={int(val) + 1}&'
+                            elif filt == 'less':
+                                url += f'orderBy="{nutri}"&endAt={int(val) - 1}&'
+                        url = url.rstrip('&')
+                        print(f"{i}: \n{url}\n")
+                        response = requests.get(url)
+                        response.raise_for_status()  # raise error if req not successful
+                        tmp_foods = response.json()
+                        all_foods.update(tmp_foods)
+                    except:
+                        print('passed')
+                        pass
             else:
                 # raise Exception ("Please enter valid search inputs")
                 return render_template("failure.html")
         items = [v for k, v in all_foods.items()]
-        print(items)
         # if get not working, might need invalid input check
         #return jsonify(all_foods), 200
         return render_template('query.html', items=items)
