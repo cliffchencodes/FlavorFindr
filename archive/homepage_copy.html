@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlavorFindr</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Shrikhand', cursive;
+            text-align: center;
+            color: #333;
+            font-size: 80px;
+            margin-bottom: 15px;
+            text-shadow: 10px 5px 5px rgba(144, 238, 144, 0.6);
+
+        }
+
+        #generalSearch {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 18px;
+        }
+
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .search-form label {
+            width: calc(30%);
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+
+        .search-form input[type="text"],
+        .search-form select {
+            width: calc(50%);
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .search-form select {
+            width: calc(15%);
+        }
+
+        .search-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #d1ffbd;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .form-section {
+            margin-top: 20px;
+        }
+
+        .form-section label {
+            width: calc(50% - 5px);
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+
+        .form-section input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .form-section button {
+            width: 100%;
+            padding: 10px;
+            background-color: #d1ffbd;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .form-section select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .required::after {
+            content: "*";
+            color: red;
+        }
+
+        hr {
+            height: 8px;
+            background-color: #D2B48C;
+            border: none;
+            margin-bottom: 15px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            text-align: center;
+            color: #8C673A;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        .header-images {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            /* Adjust as needed */
+        }
+
+        .header-images img {
+            width: 150px;
+            /* Adjust image width as needed */
+            height: auto;
+            /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header-images">
+            <!-- Image on the left side of the header -->
+            <img src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s"
+                alt="Left Image">
+
+            <!-- FlavorFindr header -->
+            <h1>FlavorFindr</h1>
+
+            <!-- Image on the right side of the header -->
+            <img src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s"
+                alt="Right Image">
+        </div>
+        <hr>
+
+        <!-- Advanced Search Form -->
+        <h2>Advanced Search and Filtering</h2>
+        <form action="/list" method="GET" class="search-form" id="searchForm">
+            <label for="restaurant">Restaurant Name <span class="required"></span></label>
+            <input type="text" id="restaurant">
+            <select id="restaurantCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+                <option value="equal">equal to</option>
+                <option value="greater">greater than</option>
+                <option value="less">less than</option>
+            </select>
+
+            <label for="itemName">Item Name <span class="required"></span></label>
+            <input type="text" id="itemName">
+            <select id="itemNameCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+                <option value="equal">equal to</option>
+                <option value="greater">greater than</option>
+                <option value="less">less than</option>
+            </select>
+
+            <label for="calories">Calories <span class="required"></span></label>
+            <input type="text" id="calories">
+            <select id="caloriesCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+                <option value="equal">equal to</option>
+                <option value="greater">greater than</option>
+                <option value="less">less than</option>
+            </select>
+
+            <label for="protein">Protein (g):</label>
+            <input type="text" id="protein">
+            <select id="proteinCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+                <option value="equal">equal to</option>
+                <option value="greater">greater than</option>
+                <option value="less">less than</option>
+            </select>
+
+            <label for="carbs">Carbohydrates (g):</label>
+            <input type="text" id="carbs">
+            <select id="carbsCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+                <option value="equal">equal to</option>
+                <option value="greater">greater than</option>
+                <option value="less">less than</option>
+            </select>
+
+            <label for="fats">Fats (g):</label>
+            <input type="text" id="fats">
+            <select id="fatsCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+                <option value="equal">equal to</option>
+                <option value="greater">greater than</option>
+                <option value="less">less than</option>
+            </select>
+
+            <button type="submit">Advanced Search</button>
+        </form>
+        <hr>
+
+        <!-- Aggregation Function -->
+        <div class="form-section" id="aggregationForm">
+            <h2>Aggregation Function</h2>
+            <label for="aggFunction">Select Aggregation Function</label>
+            <select id="aggFunction">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+                <option value="min">minimum</option>
+                <option value="max">maximum</option>
+                <option value="count">count</option>
+                <option value="sum">sum</option>
+                <option value="average">average</option>
+            </select>
+
+            <!-- Input fields for each category -->
+            <label for="aggRestaurant">Restaurant</label>
+            <input type="text" id="aggRestaurant">
+
+            <!-- Button for submitting aggregation function -->
+            <button id="aggDataBtn">Apply Aggregation</button>
+        </div>
+        <hr>
+        <!-- Form to Add Data to Database -->
+        <div class="form-section" id="addForm">
+            <h2>Add to Database</h2>
+            <label for="restaurant">Restaurant Name <span class="required"></span></label>
+            <input type="text" id="restaurant">
+
+            <label for="itemName">Item Name <span class="required"></span></label>
+            <input type="text" id="itemName">
+
+            <label for="calories">Calories <span class="required"></span></label>
+            <input type="text" id="calories">
+
+
+            <label for="addProtein">Protein:</label>
+            <input type="text" id="addProtein">
+
+            <label for="addCarbs">Carbs:</label>
+            <input type="text" id="addCarbs">
+
+            <label for="addFats">Fats:</label>
+            <input type="text" id="addFats">
+
+            <button id="addDataBtn">Add Data</button>
+        </div>
+        <hr>
+
+        <!-- Form to Delete Data from Database -->
+        <div class="form-section" id="deleteForm">
+            <h2>Delete from Database</h2>
+            <label for="deleteAttribute">Attribute:</label>
+            <select id="deleteAttribute">
+                <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="itemName">Item Name</option>
+                <option value="calories">Calories</option>
+                <option value="protein">Protein</option>
+                <option value="carbs">Carbs</option>
+                <option value="fats">Fats</option>
+            </select>
+
+            <label for="deleteValue">Value:</label>
+            <input type="text" id="deleteValue">
+
+            <button id="deleteDataBtn">Delete Data</button>
+        </div>
+        <hr>
+
+        <!-- Form to Update Data in the Database -->
+        <div class="form-section" id="updateForm">
+            <h2>Update the Database</h2>
+            <form class="update-form" id="updateForm">
+                <label for="updateAttribute">Attribute:</label>
+                <select id="updateAttribute">
+                    <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="itemName">Item Name</option>
+                    <option value="calories">Calories</option>
+                    <option value="protein">Protein</option>
+                    <option value="carbs">Carbs</option>
+                    <option value="fats">Fats</option>
+                </select>
+
+                <label for="oldValue">Old Value:</label>
+                <input type="text" id="oldValue">
+
+                <label for="newValue">New Value:</label>
+                <input type="text" id="newValue">
+
+                <button id="updateDataBtn">Update Data</button>
+            </form>
+            <hr>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif"
+                alt="funny burger GIF" class="center">
+            <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
+            <h3>DSCI551</h3>
+        </div>
+    </div>
+
+</body>
+
+</html>
