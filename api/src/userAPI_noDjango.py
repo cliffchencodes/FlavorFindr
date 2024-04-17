@@ -89,6 +89,7 @@ def read():
     fat_val = request.args.get("total_fat")
     prot_filt = request.args.get("pro_filt_type")
     prot_val = request.args.get("protein")
+
     try:
         # name-based food search: 
         if food_name != "":
@@ -98,6 +99,7 @@ def read():
             response = requests.get(url)
             response.raise_for_status()  # raise error if req not successful
             all_foods = response.json()
+
         
         else:
             filters = []
@@ -129,11 +131,11 @@ def read():
                     # print(response.json())
                     tmp_foods = response.json()
                     all_foods.update(tmp_foods)
-                    items = [v for k, v in all_foods.items()]
             else:
                 # raise Exception ("Please enter valid search inputs")
                 return render_template("failure.html")
-
+        items = [v for k, v in all_foods.items()]
+        print(items)
         # if get not working, might need invalid input check
         #return jsonify(all_foods), 200
         return render_template('query.html', items=items)
