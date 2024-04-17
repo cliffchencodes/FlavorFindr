@@ -11,7 +11,22 @@ app.register_blueprint(userAPI)
 
 @app.route("/")
 def homepage():
-    return render_template("homepage.html")
+    return render_template("landingPage.html")
+
+
+@app.route("/help")
+def help():
+    return render_template("huh.html")
+
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
+
+@app.route("/user")
+def user():
+    return render_template("user.html")
 
 
 if __name__ == "__main__":
