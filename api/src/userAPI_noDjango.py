@@ -270,7 +270,6 @@ def delete():
         return render_template("failure.html")
 
 
-
 # ORDERBY method - Done
 @userAPI.route("/orderby", methods=["GET"])
 def orderby():
@@ -289,12 +288,12 @@ def orderby():
     sorted_df = dict(
         sorted(out_dict.items(), key=lambda x: int(x[1][sb_cat]), reverse=desc)
     )
-    for key, vals in sorted_df.items():
-        output_list.append({key: vals})
+
+    items = [v for k, v in sorted_df.items()]
 
     print(f"Output List: \n{output_list}\n")
     # return jsonify(output_list)
-    return render_template('query.html', items=output_list)
+    return render_template('query.html', items=items)
 
 
 @userAPI.route("/aggregate", methods=["GET"])
