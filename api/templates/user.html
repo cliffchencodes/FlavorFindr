@@ -1,301 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlavorFindr - User</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-      }
 
-      .container {
-        width: 100%;
-        max-width: 1000px;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlavorFindr - User</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-      h1 {
-        font-family: 'Shrikhand', cursive;
-        text-align: center;
-        color: #333;
-        font-size: 80px;
-        margin-bottom: 15px;
-        text-shadow: 10px 5px 5px rgba(144, 238, 144, 0.6);
-      }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-      #generalSearch {
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        font-size: 18px;
-      }
+    h1 {
+      font-family: 'Shrikhand', cursive;
+      text-align: center;
+      color: #333;
+      font-size: 80px;
+      margin-bottom: 15px;
+      text-shadow: 10px 5px 5px rgba(144, 238, 144, 0.6);
+    }
 
-      .search-form {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
+    #generalSearch {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 18px;
+    }
 
-      .search-form label {
-        width: calc(30%);
-        margin-bottom: 5px;
-        margin-top: 10px;
-      }
+    .search-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
 
-      .search-form input[type="text"],
-      .search-form select {
-        width: calc(50%);
-        padding: 3px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-      }
+    .search-form label {
+      width: calc(30%);
+      margin-bottom: 5px;
+      margin-top: 10px;
+    }
 
-      .search-form select {
-        width: calc(15%);
-      }
+    .search-form input[type="text"],
+    .search-form select {
+      width: calc(50%);
+      padding: 3px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
 
-      .search-form button {
-        width: 100%;
-        padding: 10px;
-        background-color: #d1ffbd;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 20px;
-        margin-top: 20px;
-      }
+    .search-form select {
+      width: calc(15%);
+    }
 
-      .form-section {
-        margin-top: 20px;
-      }
+    .search-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #d1ffbd;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 20px;
+    }
 
-      .form-section label {
-        width: calc(50% - 5px);
-        margin-bottom: 20px;
-        margin-top: 10px;
-      }
+    .form-section {
+      margin-top: 20px;
+    }
 
-      .form-section input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-      }
+    .form-section label {
+      width: calc(50% - 5px);
+      margin-bottom: 20px;
+      margin-top: 10px;
+    }
 
-      .form-section button {
-        width: 100%;
-        padding: 10px;
-        background-color: #d1ffbd;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 20px;
-        margin-top: 15px;
-        margin-bottom: 10px;
-      }
+    .form-section input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
 
-      .form-section-order button {
-        width: 100%;
-        padding: 10px;
-        background-color: #d1ffbd;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 20px;
-        margin-top: 15px;
-        margin-bottom: 10px;
-      }
+    .form-section button {
+      width: 100%;
+      padding: 10px;
+      background-color: #d1ffbd;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
 
-      .form-section select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-      }
+    .form-section-order button {
+      width: 100%;
+      padding: 10px;
+      background-color: #d1ffbd;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
 
-      .form-section-order select {
-        width: 70%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-        margin-right: 50px;
-      }
+    .form-section select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
 
-      .required::after {
-        content: "*";
-        color: red;
-      }
+    .form-section-order select {
+      width: 70%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      margin-right: 50px;
+    }
 
-      hr {
-        height: 8px;
-        background-color: #D2B48C;
-        border: none;
-        margin-bottom: 15px;
-        margin-top: 30px;
-      }
+    .required::after {
+      content: "*";
+      color: red;
+    }
 
-      h3 {
-        text-align: center;
-        color: #8C673A;
-      }
+    hr {
+      height: 8px;
+      background-color: #D2B48C;
+      border: none;
+      margin-bottom: 15px;
+      margin-top: 30px;
+    }
 
-      .center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
-      }
+    h3 {
+      text-align: center;
+      color: #8C673A;
+    }
 
-      .header-images {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-        /* Adjust as needed */
-      }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+    }
 
-      .header-images img {
-        width: 150px;
-        /* Adjust image width as needed */
-        height: auto;
-        /* Maintain aspect ratio */
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header-images">
-        <!-- Image on the left side of the header -->
-        <img src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s" alt="Left Image">
-        <!-- FlavorFindr header -->
+    .header-images {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      /* Adjust as needed */
+    }
+
+    .header-images img {
+      width: 150px;
+      /* Adjust image width as needed */
+      height: auto;
+      /* Maintain aspect ratio */
+    }
+
+    #landingPageLink {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header-images">
+      <!-- Image on the left side of the header -->
+      <img
+        src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s"
+        alt="Left Image">
+      <!-- FlavorFindr header -->
+      <a href="/" id="landingPageLink">
         <h1>FlavorFindr</h1>
-        <!-- Image on the right side of the header -->
-        <img src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s" alt="Right Image">
+      </a>
+      <!-- Image on the right side of the header -->
+      <img
+        src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s"
+        alt="Right Image">
+    </div>
+    <hr>
+    <h3>USER</h3>
+
+    <!-- Advanced Search Form -->
+    <h2>Advanced Search and Filtering</h2>
+    <form action="/list" method="GET" class="search-form" id="searchForm">
+      <label for="food_name">Item Name <span class="required"></span></label>
+      <input type="text" id="food_name" name="food_name">
+      <select id="food_name_condition">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <!-- This div will be on its own row -->
+      <div style="text-align: center; width: 100%;">
+        <br>
+        <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+        <br>
       </div>
-      <hr>
-      <h3>USER</h3>
-      <!-- Advanced Search Form -->
-      <h2>Advanced Search and Filtering</h2>
-      <form class="search-form" id="searchForm">
-        <label for="restaurant">Restaurant Name <span class="required"></span>
-        </label>
-        <input type="text" id="restaurant">
-        <select id="restaurantCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="itemName">Item Name <span class="required"></span>
-        </label>
-        <input type="text" id="itemName">
-        <select id="itemNameCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="calories">Calories <span class="required"></span>
-        </label>
-        <input type="text" id="calories">
-        <select id="caloriesCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="protein">Protein</label>
-        <input type="text" id="protein">
-        <select id="proteinCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="carbs">Carbohydrates</label>
-        <input type="text" id="carbs">
-        <select id="carbsCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="fats">Total Fats</label>
-        <input type="text" id="fats">
-        <select id="fatsCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <button type="submit">Advanced Search</button>
-      </form>
-      <hr>
-      <!-- Aggregation Function -->
+
+      <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
+      <input type="text" id="restaurant_name" name="restaurant_name">
+      <select id="restaurantCondition">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="calories">Calories <span class="required"></span></label>
+      <input type="text" id="cals" name="cals">
+      <select id="cal_filt_type" name="cal_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="protein">Protein (g):</label>
+      <input type="text" id="protein" name="protein">
+      <select id="pro_filt_type" name="pro_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="carbs">Carbohydrates (g):</label>
+      <input type="text" id="carbs" name="carbs">
+      <select id="carb_filt_type" name="carb_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="total_fat">Fats (g):</label>
+      <input type="text" id="total_fat" name="total_fat">
+      <select id="fat_filt_type" name="fat_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+      <button type="submit" id="aggDataBtn"
+        style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+        onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Advanced
+        Search</button>
+    </form>
+    <hr>
+
+
+    <!-- Aggregation Function -->
+    <form action="/aggregate" method="GET">
       <div class="form-section" id="aggregationForm">
         <h2>Aggregation Function</h2>
-        <label for="aggFunction">Aggregation Function</label>
-        <select id="aggFunction">
+
+        <!-- Input fields for each category -->
+        <label for="group_by">Category</label>
+        <select id="agg_cat" name="agg_cat">
+          <option value="restaurant_name">Restaurant</option>
+        </select><br>
+
+        <label for="agg_operation">Select Aggregation Function</label>
+        <select id="agg_operation" name="agg_operation" onchange="showAggregationField()">
           <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="min">minimum</option>
-          <option value="max">maximum</option>
-          <option value="count">count</option>
-          <option value="sum">sum</option>
-          <option value="average">average</option>
+          <option value="sum">Sum</option>
+          <option value="count">Count</option>
+          <option value="avg">Average</option>
+          <option value="min">Minimum</option>
+          <option value="max">Maximum</option>
         </select>
-        <label for="aggRestaurant">Category</label>
-        <select id="aggFunction">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="min">Restaurant</option>
-        </select>
-        <button id="aggDataBtn">Apply Aggregation</button>
+
+        <div id="aggregation_field" style="display: none;">
+          <label for="agg_field">Aggregation Field:</label>
+          <select id="agg_field" name="agg_field">
+            <option value="calories">Calories</option>
+            <option value="carbohydrates">Carbohydrates</option>
+            <option value="total_fat">Total Fat</option>
+            <option value="protein">Protein</option>
+          </select>
+        </div>
+
+        <!-- Button for submitting aggregation function -->
+        <button type="submit" id="aggDataBtn"
+          style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Apply
+          Aggregation</button>
       </div>
-      <hr>
-      <!-- Section for Order By -->
+    </form>
+    <hr>
+
+
+    <!-- Section for Order By -->
+    <form>
       <div class="form-section-order" id="orderByForm">
         <h2>Order By</h2>
-        <label for="orderBy">Order by:</label>
-        <select id="orderBy">
+        <label for="sb_cat">Order by:</label>
+        <select id="agg_field" name="agg_field">
           <option value="" disabled selected style="color: lightgray;">Please select...</option>
           <option value="calories">Calories</option>
           <option value="carbohydrates">Carbohydrates</option>
           <option value="proteins">Proteins</option>
           <option value="totalFat">Total Fat</option>
         </select>
-        <label for="orderByDesc">DESC:</label>
-        <input type="checkbox" id="orderByDesc" name="orderByDirection">
-        <button id="orderByBtn">Order By</button>
+
+        <label for="descending">DESC:</label>
+        <input type="checkbox" id="descending" name="descending">
+        <button type="submit" id="orderByBtn"
+          style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Order
+          By</button>
       </div>
-      <hr>
-      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif" alt="funny burger GIF" class="center">
-      <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
-      <h3>DSCI551</h3>
-    </div>
-    </div>
-  </body>
+    </form>
+    <hr>
+
+    <img
+      src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif"
+      alt="funny burger GIF" class="center">
+    <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
+    <h3>DSCI551</h3>
+
+    <a href="help">
+      <button style="color: white; background-color: white; border: 2px solid #f2f2f2;">help</button>
+    </a>
+
+  </div>
+  </div>
+</body>
+
 </html>

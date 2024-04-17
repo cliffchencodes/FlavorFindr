@@ -1,261 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlavorFindr - Admin</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-      }
 
-      .container {
-        width: 100%;
-        max-width: 1000px;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlavorFindr - Admin</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-      h1 {
-        font-family: 'Shrikhand', cursive;
-        text-align: center;
-        color: #333;
-        font-size: 80px;
-        margin-bottom: 15px;
-        text-shadow: 10px 5px 5px rgba(144, 238, 144, 0.6);
-      }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-      #generalSearch {
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        font-size: 18px;
-      }
+    h1 {
+      font-family: 'Shrikhand', cursive;
+      text-align: center;
+      color: #333;
+      font-size: 80px;
+      margin-bottom: 15px;
+      text-shadow: 10px 5px 5px rgba(144, 238, 144, 0.6);
+    }
 
-      .search-form {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
+    #generalSearch {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 18px;
+    }
 
-      .search-form label {
-        width: calc(30%);
-        margin-bottom: 5px;
-        margin-top: 10px;
-      }
+    .search-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
 
-      .search-form input[type="text"],
-      .search-form select {
-        width: calc(50%);
-        padding: 3px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-      }
+    .search-form label {
+      width: calc(30%);
+      margin-bottom: 5px;
+      margin-top: 10px;
+    }
 
-      .search-form select {
-        width: calc(15%);
-      }
+    .search-form input[type="text"],
+    .search-form select {
+      width: calc(50%);
+      padding: 3px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
 
-      .search-form button {
-        width: 100%;
-        padding: 10px;
-        background-color: #d1ffbd;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 20px;
-        margin-top: 20px;
-      }
+    .search-form select {
+      width: calc(15%);
+    }
 
-      .form-section {
-        margin-top: 20px;
-      }
+    .search-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #d1ffbd;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 20px;
+    }
 
-      .form-section label {
-        width: calc(50% - 5px);
-        margin-bottom: 20px;
-        margin-top: 10px;
-      }
+    .form-section {
+      margin-top: 20px;
+    }
 
-      .form-section input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-      }
+    .form-section label {
+      width: calc(50% - 5px);
+      margin-bottom: 20px;
+      margin-top: 10px;
+    }
 
-      .form-section button {
-        width: 100%;
-        padding: 10px;
-        background-color: #d1ffbd;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
+    .form-section input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
 
-      .form-section select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-      }
+    .form-section button {
+      width: 100%;
+      padding: 10px;
+      background-color: #d1ffbd;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
 
-      .required::after {
-        content: "*";
-        color: red;
-      }
-      
-      hr {
-        height: 8px;
-        background-color: #D2B48C;
-        border: none;
-        margin-bottom: 15px;
-        margin-top: 30px;
-      }
+    .form-section select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
 
-      h3 {
-        text-align: center;
-        color: #8C673A;
-      }
+    .required::after {
+      content: "*";
+      color: red;
+    }
 
-      .center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
-      }
+    hr {
+      height: 8px;
+      background-color: #D2B48C;
+      border: none;
+      margin-bottom: 15px;
+      margin-top: 30px;
+    }
 
-      .header-images {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-        /* Adjust as needed */
-      }
+    h3 {
+      text-align: center;
+      color: #8C673A;
+    }
 
-      .header-images img {
-        width: 150px;
-        /* Adjust image width as needed */
-        height: auto;
-        /* Maintain aspect ratio */
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header-images">
-        <!-- Image on the left side of the header -->
-        <img src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s" alt="Left Image">
-        <!-- FlavorFindr header -->
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+    }
+
+    .header-images {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      /* Adjust as needed */
+    }
+
+    .header-images img {
+      width: 150px;
+      /* Adjust image width as needed */
+      height: auto;
+      /* Maintain aspect ratio */
+    }
+
+    #landingPageLink {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header-images">
+      <!-- Image on the left side of the header -->
+      <img
+        src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s"
+        alt="Left Image">
+      <!-- FlavorFindr header -->
+      <a href="/" id="landingPageLink">
         <h1>FlavorFindr</h1>
-        <!-- Image on the right side of the header -->
-        <img src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s" alt="Right Image">
-      </div>
-      <hr>
-      <h3>ADMIN</h3>
-      <!-- Advanced Search Form -->
-      <h2>Advanced Search and Filtering</h2>
-      <form class="search-form" id="searchForm">
-        <label for="restaurant">Restaurant Name <span class="required"></span>
-        </label>
-        <input type="text" id="restaurant">
-        <select id="restaurantNameCondition" >
-          <option value="" disabled selected style="color: white;">Nothing here...</option>
+      </a>
+      <!-- Image on the right side of the header -->
+      <img
+        src="https://media.giphy.com/media/XZA6eh1KbEP7aTp6J9/giphy.gif?cid=790b7611u2pzzjihcucm7ub9uymjyxpbiqwdkgj46p1s6364&ampep=v1_gifs_search&amprid=giphy.gif&ampct=s"
+        alt="Right Image">
+    </div>
+    <hr>
+    <h3>ADMIN</h3>
 
-        </select>
-        <label for="itemName">Item Name <span class="required"></span>
-        </label>
-        <input type="text" id="itemName">
-        <select id="itemNameCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="calories">Calories <span class="required"></span>
-        </label>
-        <input type="text" id="calories">
-        <select id="caloriesCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="protein">Protein (g):</label>
-        <input type="text" id="protein">
-        <select id="proteinCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="carbs">Carbohydrates (g):</label>
-        <input type="text" id="carbs">
-        <select id="carbsCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <label for="fats">Fats (g):</label>
-        <input type="text" id="fats">
-        <select id="fatsCondition">
-          <option value="" disabled selected style="color: lightgray;">Please select...</option>
-          <option value="equal">equal to</option>
-          <option value="greater">greater than</option>
-          <option value="less">less than</option>
-        </select>
-        <button type="submit">Advanced Search</button>
-      </form>
-      <hr>
-      <!-- Form to Add Data to Database -->
+    <!-- Advanced Search Form -->
+    <h2>Advanced Search and Filtering</h2>
+    <form action="/list" method="GET" class="search-form" id="searchForm">
+      <label for="food_name">Item Name <span class="required"></span></label>
+      <input type="text" id="food_name" name="food_name">
+      <select id="food_name_condition">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <!-- This div will be on its own row -->
+      <div style="text-align: center; width: 100%;">
+        <br>
+        <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+        <br>
+      </div>
+
+      <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
+      <input type="text" id="restaurant_name" name="restaurant_name">
+      <select id="restaurantCondition">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="calories">Calories <span class="required"></span></label>
+      <input type="text" id="cals" name="cals">
+      <select id="cal_filt_type" name="cal_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="protein">Protein (g):</label>
+      <input type="text" id="protein" name="protein">
+      <select id="pro_filt_type" name="pro_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="carbs">Carbohydrates (g):</label>
+      <input type="text" id="carbs" name="carbs">
+      <select id="carb_filt_type" name="carb_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <label for="total_fat">Fats (g):</label>
+      <input type="text" id="total_fat" name="total_fat">
+      <select id="fat_filt_type" name="fat_filt_type">
+        <option value="" disabled selected style="color: lightgray;">Please select...</option>
+        <option value="equal">equal to</option>
+        <option value="greater">greater than</option>
+        <option value="less">less than</option>
+      </select>
+
+      <button type="submit" id="advSearchDataBtn"
+        style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+        onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Advanced
+        Search</button>
+    </form>
+    <hr>
+
+
+    <!-- PUT Form -->
+    <!-- Form to Add Data to Database -->
+    <form action="/add" method="POST">
       <div class="form-section" id="addForm">
         <h2>Add to Database</h2>
-        <label for="restaurant">Restaurant Name <span class="required"></span>
-        </label>
-        <input type="text" id="restaurant">
-        <label for="itemName">Item Name <span class="required"></span>
-        </label>
-        <input type="text" id="itemName">
-        <label for="calories">Calories <span class="required"></span>
-        </label>
-        <input type="text" id="calories">
-        <label for="addProtein">Protein:</label>
-        <input type="text" id="addProtein">
-        <label for="addCarbs">Carbs:</label>
-        <input type="text" id="addCarbs">
-        <label for="addFats">Fats:</label>
-        <input type="text" id="addFats">
-        <button id="addDataBtn">Add Data</button>
+        <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
+        <input type="text" id="restaurant_name" name="restaurant_name" id="restaurant">
+
+        <label for="food_name">Item Name <span class="required"></span></label>
+        <input type="text" id="food_name" name="food_name">
+
+        <label for="calories">Calories <span class="required"></span></label>
+        <input type="text" id="calories" name="calories">
+
+        <label for="protein">Protein:</label>
+        <input type="text" id="protein" name="protein">
+
+        <label for="carbohydrates">Carbs:</label>
+        <input type="text" id="carbohydrates" name="carbohydrates">
+
+        <label for="total_fat">Fats:</label>
+        <input type="text" id="total_fat" name="total_fat">
+
+        <button type="submit" id="addDataBtn"
+          style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Add
+          Data</button>
+
       </div>
-      <hr>
-      <!-- Form to Delete Data from Database -->
+    </form>
+    <hr>
+
+
+    <!-- DELETE Form -->
+    <!-- Form to Delete Data from Database -->
+    <form action="/delete" method="POST">
       <div class="form-section" id="deleteForm">
         <h2>Delete from Database</h2>
-        <label for="deleteAttribute">Attribute:</label>
-        <select id="deleteAttribute">
+        <label for="id">Food Name:</label>
+        <input type="text" id="id" name="id"><br><br>
+        <div style="text-align: center;">
+          <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+        </div>
+        <label for="filt_field">Attribute:</label>
+        <select id="filt_field" name="filt_field">
           <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
           <option value="restaurant">Restaurant</option>
           <option value="itemName">Item Name</option>
@@ -264,37 +315,84 @@
           <option value="carbs">Carbs</option>
           <option value="fats">Fats</option>
         </select>
-        <label for="deleteValue">Value:</label>
-        <input type="text" id="deleteValue">
-        <button id="deleteDataBtn">Delete Data</button>
+
+        <label for="filt_type">Filter Type:</label>
+        <select id="filt_type" name="filt_type">
+          <option value="none">*Exclude This Field*</option>
+          <option value="equal">Equals</option>
+          <option value="greater">Greater Than</option>
+          <option value="less">Less Than</option>
+        </select>
+
+        <label for="filt_val">Filter Value:</label>
+        <input type="text" id="filt_val" name="filt_val">
+
+        <button type="submit" id="deleteDataBtn"
+          style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Delete
+          Data</button>
       </div>
-      <hr>
-      <!-- Form to Update Data in the Database -->
+    </form>
+    <hr>
+
+
+    <!-- POST Form -->
+    <!-- Form to Update Data in the Database -->
+    <form>
       <div class="form-section" id="updateForm">
         <h2>Update the Database</h2>
-        <form class="update-form" id="updateForm">
-          <label for="updateAttribute">Attribute:</label>
-          <select id="updateAttribute">
-            <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
-            <option value="restaurant">Restaurant</option>
-            <option value="itemName">Item Name</option>
-            <option value="calories">Calories</option>
-            <option value="protein">Protein</option>
-            <option value="carbs">Carbs</option>
-            <option value="fats">Fats</option>
-          </select>
-          <label for="oldValue">Old Value:</label>
-          <input type="text" id="oldValue">
-          <label for="newValue">New Value:</label>
-          <input type="text" id="newValue">
-          <button id="updateDataBtn">Update Data</button>
-        </form>
-        <hr>
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif" alt="funny burger GIF" class="center">
-        <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
-        <h3>DSCI551</h3>
-      </div>
-    </div>
-  </body>
-</html>
+        <label for="id">Food Name:</label>
+        <input type="text" id="id" name="id">
 
+        <div style="text-align: center; width: 100%;">
+          <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+        </div>
+
+        <label for="filt_field">Attribute:</label>
+        <select id="filt_field" name="filt_field">
+          <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
+          <option value="restaurant">Restaurant</option>
+          <option value="itemName">Item Name</option>
+          <option value="calories">Calories</option>
+          <option value="protein">Protein</option>
+          <option value="carbs">Carbs</option>
+          <option value="fats">Fats</option>
+        </select>
+
+        <label for="filt_type">Filter Type:</label>
+        <select id="filt_type" name="filt_type">
+          <option value="none">*Exclude This Field*</option>
+          <option value="equal">Equals</option>
+          <option value="greater">Greater Than</option>
+          <option value="less">Less Than</option>
+        </select>
+
+        <label for="old_val">Old Value:</label>
+        <input type="text" id="old_val" name="old_val">
+
+        <label for="new_val">New Value:</label>
+        <input type="text" id="new_val" name="new_val">
+
+        <button type="submit" id="updateDataBtn"
+          style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Delete
+          Data</button>
+      </div>
+    </form>
+    <hr>
+
+    <img
+      src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif"
+      alt="funny burger GIF" class="center">
+    <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
+    <h3>DSCI551</h3>
+
+    <a href="help">
+      <button style="color: white; background-color: white; border: 2px solid #f2f2f2;">help</button>
+    </a>
+
+  </div>
+  </div>
+</body>
+
+</html>
