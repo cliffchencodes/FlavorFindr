@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Search Results</title>
@@ -9,28 +10,35 @@
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #dddddd;
             padding: 8px;
             text-align: left;
         }
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         tr:hover {
             background-color: #ddd;
         }
+
         .clickable-row {
             cursor: pointer;
         }
+
         #chart-container {
             width: 750px;
             height: 750px;
             float: right;
-            
+
         }
     </style>
 </head>
+
 <body>
     <h1>Search Results</h1>
     <div style="float: left; width: 50%;">
@@ -50,7 +58,8 @@
             <!-- Table rows -->
             <tbody>
                 {% for item in items %}
-                <tr class="clickable-row" data-protein="{{ item.protein }}" data-fat="{{ item.total_fat }}" data-carbs="{{ item.carbohydrates }}">
+                <tr class="clickable-row" data-protein="{{ item.protein }}" data-fat="{{ item.total_fat }}"
+                    data-carbs="{{ item.carbohydrates }}">
                     <td>{{ item.restaurant_name }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.calories }}</td>
@@ -70,12 +79,12 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var ctx = document.getElementById('nutritionChart').getContext('2d');
             var chart;
 
-            document.querySelectorAll('.clickable-row').forEach(function(row) {
-                row.addEventListener('click', function() {
+            document.querySelectorAll('.clickable-row').forEach(function (row) {
+                row.addEventListener('click', function () {
                     var protein = parseFloat(this.dataset.protein);
                     var fat = parseFloat(this.dataset.fat);
                     var carbs = parseFloat(this.dataset.carbs);
@@ -128,19 +137,22 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
+
         .button:hover {
-            background-color: #45a049; /* Darker shade on hover */
+            background-color: #45a049;
+            /* Darker shade on hover */
         }
     </style>
 
     <footer style="text-align: center; margin: 20px 0; cursor: pointer; transition: background-color 0.2s">
         <button onclick="goBack()" class="button">
-          Go Back
+            Go Back
         </button>
     </footer>
-      
+
     <script>
-    function goBack() {window.history.back();}
+        function goBack() { window.history.back(); }
     </script>
 </body>
+
 </html>

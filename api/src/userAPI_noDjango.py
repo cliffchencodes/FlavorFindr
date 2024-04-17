@@ -16,7 +16,6 @@ DATABASE_URLS = {
     3: 'https://dsci551-final-db3-default-rtdb.firebaseio.com/', #'p-t',
     4: 'https://dsci551-final-db4-default-rtdb.firebaseio.com/' #'u-z'
 }
-foodName = "Quarter Pounder Bacon"
 
 def hashing(foodName):
     foodName = foodName.lower()
@@ -90,8 +89,36 @@ def read():
     prot_filt = request.args.get("pro_filt_type")
     prot_val = request.args.get("protein")
 
+    # check input values if empty
+    all_entries = [
+        food_name,
+        rest_name,
+        carb_filt,
+        carb_val,
+        cal_filt,
+        cal_val,
+        fat_filt,
+        fat_val,
+        prot_filt,
+        prot_val
+        ]
+    empty_vals = ['', None]
+    
     # result dictionary
     all_foods = {}
+
+    # return all entries
+    if all(val in all_entries for val in empty_vals):
+        for i in range(5):
+            db_base = f"{DATABASE_URLS[i]}"
+            url = f'{db_base}foods.json'
+            response = requests.get(url)
+            response.raise_for_status()  # raise error if req not successful
+            all_foods.update(response.json())
+        items = [v for _, v in all_foods.items()]
+        # print(f"Items: \n{items}\n\n")
+        return render_template('query.html', items=items)
+
 
     # filters to apply
     filters = []
@@ -265,6 +292,7 @@ def orderby():
     for key, vals in sorted_df.items():
         output_list.append({key: vals})
 
+    print(f"Output List: \n{output_list}\n")
     # return jsonify(output_list)
     return render_template('query.html', items=output_list)
 
