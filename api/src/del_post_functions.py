@@ -92,7 +92,7 @@ def updateEqual(attribute, val, new, glb_db):
         if response.status_code == 200:
             data = response.json()
             for item in data:
-                data[item][attribute] = new
+                data[item][attribute] = int(new)
                 requests.put(f"{URL}/foods/{item}.json", json=data[item])
 
 
@@ -106,7 +106,7 @@ def updateGreater(attribute, val, new, glb_db):
         if response.status_code == 200:
             data = response.json()
             for item in data:
-                data[item][attribute] = new
+                data[item][attribute] = int(new)
                 requests.put(f"{URL}/foods/{item}.json", json=data[item])
 
 
@@ -119,5 +119,5 @@ def updateLesser(attribute, val, new, glb_db):
         if response.status_code == 200:
             data = response.json()
             for item in data:
-                data[item][attribute] = new
+                data[item][attribute] = int(new)
                 requests.put(f"{URL}/foods/{item}.json", json=data[item])
