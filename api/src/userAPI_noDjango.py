@@ -101,14 +101,12 @@ def read():
         fat_val,
         prot_filt,
         prot_val
-        ]
-    empty_vals = ['', None]
-    
+        ]    
     # result dictionary
     all_foods = {}
 
     # return all entries
-    if all(val in all_entries for val in empty_vals):
+    if all(entry == "" or entry is None for entry in all_entries):
         for i in range(5):
             db_base = f"{DATABASE_URLS[i]}"
             url = f'{db_base}foods.json'
