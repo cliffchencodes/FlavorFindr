@@ -100,19 +100,18 @@ def read():
                         ['carbohydrates', 'calories', 'total_fat', 'protein']):
         if filt != None:
             filters.append((val, filt, nutri))
-    print(f"\nfilters:{filters}\n")
+    # print(f"\nfilters:{filters}\n")
 
     try:
         # name-based food search: 
         if food_name != "":
-            print('in food_name')
             hash_val = hashing(food_name)  # should be dynamic
             db_base = f"{DATABASE_URLS[hash_val]}"
             url = f'{db_base}foods/{food_name}.json'
             response = requests.get(url)
             response.raise_for_status()  # raise error if req not successful
             all_foods = {food_name: response.json()}
-            print(f"\nAll foods: {all_foods}\n")
+            # print(f"\nAll foods: {all_foods}\n")
         else:
             # initial restaurant filter
             if rest_name != '': 
@@ -128,7 +127,7 @@ def read():
             elif filters:
                 first_op = filters[0]
                 filters = filters[1:]
-                print(f"FIRST_OP: \n{first_op}\n")
+                # print(f"FIRST_OP: \n{first_op}\n")
                 for i in range(5):
                     if first_op[1] == 'equal':
                         url = f'{DATABASE_URLS[i]}foods.json?' + f'orderBy="{first_op[2]}"&equalTo={first_op[0]}'
@@ -139,20 +138,20 @@ def read():
                     response = requests.get(url)
                     response.raise_for_status()  # raise error if req not successful
                     all_foods.update(response.json())
-                print(f"FINAL ALL_FOODS: \n{all_foods}\n")
+                # print(f"FINAL ALL_FOODS: \n{all_foods}\n")
             else:
                 return render_template("failure.html")
 
             # filter first_pull                
             try:
-                print(f"REST OF FILTERS TO APPLY: \n{filters}\n")
+                # print(f"REST OF FILTERS TO APPLY: \n{filters}\n")
                 all_foods = apply_filters(all_foods, filters)
             except:
                 print('passed')
                 pass
         
         items = [v for k, v in all_foods.items()]
-        print(f"Items: \n{items}\n\n")
+        # print(f"Items: \n{items}\n\n")
         return render_template('query.html', items=items)
     
     except Exception as error:
