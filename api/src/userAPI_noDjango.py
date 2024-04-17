@@ -257,7 +257,6 @@ def orderby():
     return render_template('query.html', items=output_list)
 
 
-# AGGREGATE method - DONE
 @userAPI.route("/aggregate", methods=["GET"])
 def aggregation():
 
@@ -280,16 +279,22 @@ def aggregation():
     elif agg_op == "avg":
         res = groupby_avg(all_foods, group_by_column)  # avg
     elif agg_op == "min":
-        min_cat = request.args.get("agg_field")
-        res = min_food(all_foods, group_by_column, min_cat)
+        cat = request.args.get("agg_field")
+        res = min_food(all_foods, group_by_column, cat)
     elif agg_op == "max":
-        max_cat = request.args.get("agg_field")
-        res = max_food(all_foods, group_by_column, max_cat)
+        cat = request.args.get("agg_field")
+        res = max_food(all_foods, group_by_column, cat)
     else:
         return jsonify({"Error": "Invalid Aggregation Type"}), 400
 
-    #return jsonify(aggregation_result), 200
-    return render_template('groupby.html',
-                           grouped_data=res,
-                           group_by_field=group_by_column,
-                           aggregate_function=agg_op)
+    if agg_op in ["min", "max"]:
+        return render_template('groupby.html',
+                               grouped_data=res,
+                               group_by_field=group_by_column,
+                               aggregate_function=agg_op,
+                               agg_field=cat)
+    else:
+        return render_template('groupby.html',
+                               grouped_data=res,
+                               group_by_field=group_by_column,
+                               aggregate_function=agg_op)
