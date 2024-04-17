@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Message</title>
+</head>
+<body>
+    <h1>Operation completed successfully!</h1>
+    <style>
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #45a049; /* Darker shade on hover */
+        }
+    </style>
+
+    <footer style="text-align: center; margin: 20px 0; cursor: pointer; transition: background-color 0.2s">
+        <button onclick="goBack()" class="button">
+          Go Back
+        </button>
+    </footer>
+      
+    <script>
+    function goBack() {window.history.back();}
+    </script>
+</body>
+</html>

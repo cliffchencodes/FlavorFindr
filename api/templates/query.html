@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .clickable-row {
+            cursor: pointer;
+        }
+        #chart-container {
+            width: 750px;
+            height: 750px;
+            float: right;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <div style="float: left; width: 50%;">
+        {% if items %}
+        <table>
+            <!-- Table headers -->
+            <thead>
+                <tr>
+                    <th>Restaurant</th>
+                    <th>Item Name</th>
+                    <th>Calories</th>
+                    <th>Protein</th>
+                    <th>Total Fat</th>
+                    <th>Carbohydrates</th>
+                </tr>
+            </thead>
+            <!-- Table rows -->
+            <tbody>
+                {% for item in items %}
+                <tr class="clickable-row" data-protein="{{ item.protein }}" data-fat="{{ item.total_fat }}" data-carbs="{{ item.carbohydrates }}">
+                    <td>{{ item.restaurant_name }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.calories }}</td>
+                    <td>{{ item.protein }}</td>
+                    <td>{{ item.total_fat }}</td>
+                    <td>{{ item.carbohydrates }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No results found.</p>
+        {% endif %}
+    </div>
+    <div id="chart-container">
+        <canvas id="nutritionChart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('nutritionChart').getContext('2d');
+            var chart;
+
+            document.querySelectorAll('.clickable-row').forEach(function(row) {
+                row.addEventListener('click', function() {
+                    var protein = parseFloat(this.dataset.protein);
+                    var fat = parseFloat(this.dataset.fat);
+                    var carbs = parseFloat(this.dataset.carbs);
+
+                    var data = {
+                        labels: ['Protein', 'Total_Fat', 'Carbohydrates'],
+                        datasets: [{
+                            label: 'Nutrition Breakdown',
+                            data: [protein, fat, carbs],
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)'
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    if (chart) {
+                        chart.destroy();
+                    }
+
+                    chart = new Chart(ctx, {
+                        type: 'pie',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                }
+                            }
+                        },
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #45a049; /* Darker shade on hover */
+        }
+    </style>
+
+    <footer style="text-align: center; margin: 20px 0; cursor: pointer; transition: background-color 0.2s">
+        <button onclick="goBack()" class="button">
+          Go Back
+        </button>
+    </footer>
+      
+    <script>
+    function goBack() {window.history.back();}
+    </script>
+</body>
+</html>
