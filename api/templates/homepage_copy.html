@@ -186,8 +186,8 @@
         <!-- Advanced Search Form -->
         <h2>Advanced Search and Filtering</h2>
         <form action="/list" method="GET" class="search-form" id="searchForm">
-            <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
-            <input type="text" id="restaurant_name" name="restaurant_name">
+            <label for="restaurant">Restaurant Name <span class="required"></span></label>
+            <input type="text" id="restaurant">
             <select id="restaurantCondition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
 
@@ -196,9 +196,9 @@
                 <option value="less">less than</option>
             </select>
 
-            <label for="food_name">Item Name <span class="required"></span></label>
-            <input type="text" id="food_name" name="food_name">
-            <select id="food_name_condition">
+            <label for="itemName">Item Name <span class="required"></span></label>
+            <input type="text" id="itemName">
+            <select id="itemNameCondition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
 
                 <option value="equal">equal to</option>
@@ -207,37 +207,35 @@
             </select>
 
             <label for="calories">Calories <span class="required"></span></label>
-            <input type="text" id="cals" name="cals">
-            <select id="cal_filt_type" name="cal_filt_type">
+            <input type="text" id="calories">
+            <select id="caloriesCondition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
-
                 <option value="equal">equal to</option>
                 <option value="greater">greater than</option>
                 <option value="less">less than</option>
             </select>
 
             <label for="protein">Protein (g):</label>
-            <input type="text" id="protein" name="protein">
-            <select id="pro_filt_type" name="pro_filt_type">
+            <input type="text" id="protein">
+            <select id="proteinCondition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
-
                 <option value="equal">equal to</option>
                 <option value="greater">greater than</option>
                 <option value="less">less than</option>
             </select>
 
             <label for="carbs">Carbohydrates (g):</label>
-            <input type="text" id="carbs" name="carbs">
-            <select id="carb_filt_type" name="carb_filt_type">
+            <input type="text" id="carbs">
+            <select id="carbsCondition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
                 <option value="equal">equal to</option>
                 <option value="greater">greater than</option>
                 <option value="less">less than</option>
             </select>
 
-            <label for="total_fat">Fats (g):</label>
-            <input type="text" id="total_fat" name="total_fat">
-            <select id="fat_filt_type" name="fat_filt_type">
+            <label for="fats">Fats (g):</label>
+            <input type="text" id="fats">
+            <select id="fatsCondition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
                 <option value="equal">equal to</option>
                 <option value="greater">greater than</option>
@@ -249,54 +247,27 @@
         <hr>
 
         <!-- Aggregation Function -->
-        <form action="/aggregate" method="GET">
-            <div class="form-section" id="aggregationForm">
-                <h2>Aggregation Function</h2>
+        <div class="form-section" id="aggregationForm">
+            <h2>Aggregation Function</h2>
+            <label for="aggFunction">Select Aggregation Function</label>
+            <select id="aggFunction">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
 
-                <!-- Input fields for each category -->
-                <label for="group_by">Category</label>
-                <select id="agg_cat" name="agg_cat">
-                    <option value="restaurant_name">Restaurant</option>
-                </select><br>
+                <option value="min">minimum</option>
+                <option value="max">maximum</option>
+                <option value="count">count</option>
+                <option value="sum">sum</option>
+                <option value="average">average</option>
+            </select>
 
-                <label for="agg_operation">Select Aggregation Function</label>
-                <select id="agg_operation" name="agg_operation" onchange="showAggregationField()">
-                    <option value="" disabled selected style="color: lightgray;">Please select...</option>
-                    <option value="sum">Sum</option>
-                    <option value="count">Count</option>
-                    <option value="avg">Average</option>
-                    <option value="min">Minimum</option>
-                    <option value="max">Maximum</option>
-                </select>
+            <!-- Input fields for each category -->
+            <label for="aggRestaurant">Restaurant</label>
+            <input type="text" id="aggRestaurant">
 
-                <div id="aggregation_field" style="display: none;">
-                    <label for="agg_field">Aggregation Field:</label>
-                    <select id="agg_field" name="agg_field">
-                        <option value="calories">Calories</option>
-                        <option value="carbohydrates">Carbohydrates</option>
-                        <option value="total_fat">Total Fat</option>
-                        <option value="protein">Protein</option>
-                    </select>
-                </div>
-
-                <!-- Button for submitting aggregation function -->
-                <button type='submit' id="aggDataBtn">Apply Aggregation</button>
-            </div>
-        </form>
-        <script>
-            function showAggregationField() {
-                var operation = document.getElementById("agg_operation").value;
-                var fieldDropdown = document.getElementById("aggregation_field");
-
-                if (operation == "min" || operation == "max") {
-                    fieldDropdown.style.display = "block";
-                } else {
-                    fieldDropdown.style.display = "none";
-                }
-            }
-        </script>
+            <!-- Button for submitting aggregation function -->
+            <button id="aggDataBtn">Apply Aggregation</button>
+        </div>
         <hr>
-        <!-- PUT Form -->
         <!-- Form to Add Data to Database -->
         <div class="form-section" id="addForm">
             <h2>Add to Database</h2>

@@ -178,14 +178,13 @@ def update():
                     updateLesser(filt_field, old_val, new_val, DATABASE_URLS)
             else:
                 raise Exception("Invalid input, please double check")
-
         return jsonify({"success": True}), 200
     
     except Exception as error:
         return f"An error occurred: {error}"
 
 
-# DELETE method
+# DELETE method - DONE
 @userAPI.route("/delete", methods=["POST", "DELETE"])
 def delete():
     try:
@@ -204,7 +203,7 @@ def delete():
             url = f"{DATABASE_URLS[hash_val]}foods/{food_name}.json"
             response = requests.delete(url)
             print('deleted')
-            return response.raise_for_status()
+            response.raise_for_status()
         else:
             if filt_field != "" and filt_type != "" and filt_val != "":
                 if filt_type == 'equal':
@@ -279,4 +278,4 @@ def aggregation():
         "group_by": group_by_column,
         f"{agg_op}": res,  
     }
-    return jsonify(aggregation_result)
+    return jsonify(aggregation_result), 200
