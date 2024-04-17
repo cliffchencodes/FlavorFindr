@@ -226,7 +226,7 @@
         <option value="less">less than</option>
       </select>
 
-      <label for="protein">Protein (g):</label>
+      <label for="protein">Protein</label>
       <input type="text" id="protein" name="protein">
       <select id="pro_filt_type" name="pro_filt_type">
         <option value="" disabled selected style="color: lightgray;">Please select...</option>
@@ -236,7 +236,7 @@
         <option value="less">less than</option>
       </select>
 
-      <label for="carbs">Carbohydrates (g):</label>
+      <label for="carbs">Carbohydrates</label>
       <input type="text" id="carbs" name="carbs">
       <select id="carb_filt_type" name="carb_filt_type">
         <option value="" disabled selected style="color: lightgray;">Please select...</option>
@@ -245,7 +245,7 @@
         <option value="less">less than</option>
       </select>
 
-      <label for="total_fat">Fats (g):</label>
+      <label for="total_fat">Fats</label>
       <input type="text" id="total_fat" name="total_fat">
       <select id="fat_filt_type" name="fat_filt_type">
         <option value="" disabled selected style="color: lightgray;">Please select...</option>
@@ -276,13 +276,13 @@
         <label for="calories">Calories <span class="required"></span></label>
         <input type="text" id="calories" name="calories">
 
-        <label for="protein">Protein:</label>
+        <label for="protein">Protein</label>
         <input type="text" id="protein" name="protein">
 
-        <label for="carbohydrates">Carbs:</label>
+        <label for="carbohydrates">Carbohydrates</label>
         <input type="text" id="carbohydrates" name="carbohydrates">
 
-        <label for="total_fat">Fats:</label>
+        <label for="total_fat">Fats</label>
         <input type="text" id="total_fat" name="total_fat">
 
         <button type="submit" id="addDataBtn"
@@ -300,7 +300,7 @@
     <form action="/delete" method="POST">
       <div class="form-section" id="deleteForm">
         <h2>Delete from Database</h2>
-        <label for="id">Food Name:</label>
+        <label for="id">Item Name:</label>
         <input type="text" id="id" name="id"><br><br>
         <div style="text-align: center;">
           <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
@@ -312,12 +312,13 @@
           <option value="itemName">Item Name</option>
           <option value="calories">Calories</option>
           <option value="protein">Protein</option>
-          <option value="carbs">Carbs</option>
+          <option value="carbs">Carbohydrates</option>
           <option value="fats">Fats</option>
         </select>
 
         <label for="filt_type">Filter Type:</label>
         <select id="filt_type" name="filt_type">
+          <option value="" disabled selected style="color: lightgray;">Please select filter type...</option>
           <option value="none">*Exclude This Field*</option>
           <option value="equal">Equals</option>
           <option value="greater">Greater Than</option>
@@ -341,7 +342,7 @@
     <form action="/update" method="POST">
       <div class="form-section" id="updateForm">
         <h2>Update the Database</h2>
-        <label for="id">Food Name:</label>
+        <label for="id">Item Name:</label>
         <input type="text" id="id" name="id">
 
         <div style="text-align: center; width: 100%;">
@@ -355,12 +356,13 @@
           <option value="itemName">Item Name</option>
           <option value="calories">Calories</option>
           <option value="protein">Protein</option>
-          <option value="carbs">Carbs</option>
+          <option value="carbs">Carbohydrates</option>
           <option value="fats">Fats</option>
         </select>
 
         <label for="filt_type">Filter Type:</label>
         <select id="filt_type" name="filt_type">
+          <option value="" disabled selected style="color: lightgray;">Please select filter type...</option>
           <option value="none">*Exclude This Field*</option>
           <option value="equal">Equals</option>
           <option value="greater">Greater Than</option>
@@ -375,7 +377,7 @@
 
         <button type="submit" id="updateDataBtn"
           style="background-color: #d1ffbd; color: #000000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
-          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Delete
+          onmouseover="this.style.backgroundColor='#88f288'" onmouseout="this.style.backgroundColor='#d1ffbd'">Update
           Data</button>
       </div>
     </form>
