@@ -90,56 +90,69 @@ def read():
     prot_filt = request.args.get("pro_filt_type")
     prot_val = request.args.get("protein")
 
+    # result dictionary
+    all_foods = {}
+
+    # filters to apply
+    filters = []
+    for val, filt, nutri in zip([carb_val, cal_val, fat_val, prot_val], 
+                        [carb_filt, cal_filt, fat_filt, prot_filt],
+                        ['carbohydrates', 'calories', 'total_fat', 'protein']):
+        if filt != None:
+            filters.append((val, filt, nutri))
+    print(f"\nfilters:{filters}\n")
+
     try:
         # name-based food search: 
         if food_name != "":
+            print('in food_name')
             hash_val = hashing(food_name)  # should be dynamic
             db_base = f"{DATABASE_URLS[hash_val]}"
             url = f'{db_base}foods/{food_name}.json'
             response = requests.get(url)
             response.raise_for_status()  # raise error if req not successful
-            all_foods = response.json()
-
-        
+            all_foods = {food_name: response.json()}
+            print(f"\nAll foods: {all_foods}\n")
         else:
-            filters = []
-            for val, filt, nutri in zip([carb_val, cal_val, fat_val, prot_val], 
-                                [carb_filt, cal_filt, fat_filt, prot_filt],
-                                ['carbohydrates', 'calories', 'total_fat', 'protein']):
-                if filt != "":
-                    filters.append((val, filt, nutri))
-                
-            # number-based search
-            print(f"\n\nfilters: {filters}\n\n")
-            if filters or rest_name: 
-                all_foods = {}
+            # initial restaurant filter
+            if rest_name != '': 
+                print('rest_name')
                 for i in range(5):
-                    url = f"{DATABASE_URLS[i]}foods.json?"
-                    try:
-                        if rest_name != "":
-                            url += f'orderBy="restaurant_name"&equalTo="{rest_name}"&'
-                        for val, filt, nutri in filters:
-                            if filt == 'equal':
-                                url += f'orderBy="{nutri}"&equalTo={int(val)}&' 
-                            elif filt == 'greater':
-                                url += f'orderBy="{nutri}"&startAt={int(val) + 1}&'
-                            elif filt == 'less':
-                                url += f'orderBy="{nutri}"&endAt={int(val) - 1}&'
-                        url = url.rstrip('&')
-                        print(f"{i}: \n{url}\n")
-                        response = requests.get(url)
-                        response.raise_for_status()  # raise error if req not successful
-                        tmp_foods = response.json()
-                        all_foods.update(tmp_foods)
-                    except:
-                        print('passed')
-                        pass
+                    # get all foods from restaurant
+                    url = f'{DATABASE_URLS[i]}foods.json?' + f'orderBy="restaurant_name"&equalTo="{rest_name}"'
+                    response = requests.get(url)
+                    response.raise_for_status()  # raise error if req not successful
+                    all_foods.update(response.json())
+            
+            # Initial filter if no restaurant name
+            elif filters:
+                first_op = filters[0]
+                filters = filters[1:]
+                print(f"FIRST_OP: \n{first_op}\n")
+                for i in range(5):
+                    if first_op[1] == 'equal':
+                        url = f'{DATABASE_URLS[i]}foods.json?' + f'orderBy="{first_op[2]}"&equalTo={first_op[0]}'
+                    elif first_op[1] == 'greater':
+                        url = f'{DATABASE_URLS[i]}foods.json?' + f'orderBy="{first_op[2]}"&startAt={int(first_op[0]) + 1}'
+                    elif first_op[1] == 'less':
+                        url = f'{DATABASE_URLS[i]}foods.json?' + f'orderBy="{first_op[2]}"&endAt={int(first_op[0]) - 1}'
+                    response = requests.get(url)
+                    response.raise_for_status()  # raise error if req not successful
+                    all_foods.update(response.json())
+                print(f"FINAL ALL_FOODS: \n{all_foods}\n")
             else:
-                # raise Exception ("Please enter valid search inputs")
                 return render_template("failure.html")
+
+            # filter first_pull                
+            try:
+                print(f"REST OF FILTERS TO APPLY: \n{filters}\n")
+                all_foods = apply_filters(all_foods, filters)
+            except:
+                print('passed')
+                pass
+        
         items = [v for k, v in all_foods.items()]
-        # if get not working, might need invalid input check
-        #return jsonify(all_foods), 200
+        print(f"Items: \n{items}\n\n")
         return render_template('query.html', items=items)
     
     except Exception as error:
