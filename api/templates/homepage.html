@@ -186,21 +186,26 @@
         <!-- Advanced Search Form -->
         <h2>Advanced Search and Filtering</h2>
         <form action="/list" method="GET" class="search-form" id="searchForm">
-            <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
-            <input type="text" id="restaurant_name" name="restaurant_name">
-            <select id="restaurantCondition">
+            <label for="food_name">Item Name <span class="required"></span></label>
+            <input type="text" id="food_name" name="food_name">
+            <select id="food_name_condition">
                 <option value="" disabled selected style="color: lightgray;">Please select...</option>
-
                 <option value="equal">equal to</option>
                 <option value="greater">greater than</option>
                 <option value="less">less than</option>
             </select>
 
-            <label for="food_name">Item Name <span class="required"></span></label>
-            <input type="text" id="food_name" name="food_name">
-            <select id="food_name_condition">
-                <option value="" disabled selected style="color: lightgray;">Please select...</option>
+            <!-- This div will be on its own row -->
+            <div style="text-align: center; width: 100%;">
+                <br>
+                <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+                <br>
+            </div>
 
+            <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
+            <input type="text" id="restaurant_name" name="restaurant_name">
+            <select id="restaurantCondition">
+                <option value="" disabled selected style="color: lightgray;">Please select...</option>
                 <option value="equal">equal to</option>
                 <option value="greater">greater than</option>
                 <option value="less">less than</option>
@@ -298,58 +303,44 @@
         <hr>
         <!-- PUT Form -->
         <!-- Form to Add Data to Database -->
-        <div class="form-section" id="addForm">
-            <h2>Add to Database</h2>
-            <label for="restaurant">Restaurant Name <span class="required"></span></label>
-            <input type="text" id="restaurant">
+        <form action="/add" method="POST">
+            <div class="form-section" id="addForm">
+                <h2>Add to Database</h2>
+                <label for="restaurant_name">Restaurant Name <span class="required"></span></label>
+                <input type="text" id="restaurant_name" name="restaurant_name" id="restaurant">
 
-            <label for="itemName">Item Name <span class="required"></span></label>
-            <input type="text" id="itemName">
+                <label for="food_name">Item Name <span class="required"></span></label>
+                <input type="text" id="food_name" name="food_name">
 
-            <label for="calories">Calories <span class="required"></span></label>
-            <input type="text" id="calories">
+                <label for="calories">Calories <span class="required"></span></label>
+                <input type="text" id="calories" name="calories">
 
+                <label for="protein">Protein:</label>
+                <input type="text" id="protein" name="protein">
 
-            <label for="addProtein">Protein:</label>
-            <input type="text" id="addProtein">
+                <label for="carbohydrates">Carbs:</label>
+                <input type="text" id="carbohydrates" name="carbohydrates">
 
-            <label for="addCarbs">Carbs:</label>
-            <input type="text" id="addCarbs">
+                <label for="total_fat">Fats:</label>
+                <input type="text" id="total_fat" name="total_fat">
 
-            <label for="addFats">Fats:</label>
-            <input type="text" id="addFats">
-
-            <button id="addDataBtn">Add Data</button>
-        </div>
+                <button type="submit" id="addDataBtn">Add Data</button>
+            </div>
+        </form>
         <hr>
 
+        <!-- DELETE Form -->
         <!-- Form to Delete Data from Database -->
-        <div class="form-section" id="deleteForm">
-            <h2>Delete from Database</h2>
-            <label for="deleteAttribute">Attribute:</label>
-            <select id="deleteAttribute">
-                <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
-                <option value="restaurant">Restaurant</option>
-                <option value="itemName">Item Name</option>
-                <option value="calories">Calories</option>
-                <option value="protein">Protein</option>
-                <option value="carbs">Carbs</option>
-                <option value="fats">Fats</option>
-            </select>
-
-            <label for="deleteValue">Value:</label>
-            <input type="text" id="deleteValue">
-
-            <button id="deleteDataBtn">Delete Data</button>
-        </div>
-        <hr>
-
-        <!-- Form to Update Data in the Database -->
-        <div class="form-section" id="updateForm">
-            <h2>Update the Database</h2>
-            <form class="update-form" id="updateForm">
-                <label for="updateAttribute">Attribute:</label>
-                <select id="updateAttribute">
+        <form action="/delete" method="POST">
+            <div class="form-section" id="deleteForm">
+                <h2>Delete from Database</h2>
+                <label for="id">Food Name:</label>
+                <input type="text" id="id" name="id"><br><br>
+                <div style="text-align: center;">
+                    <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+                </div>
+                <label for="filt_field">Attribute:</label>
+                <select id="filt_field" name="filt_field">
                     <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
                     <option value="restaurant">Restaurant</option>
                     <option value="itemName">Item Name</option>
@@ -359,22 +350,72 @@
                     <option value="fats">Fats</option>
                 </select>
 
-                <label for="oldValue">Old Value:</label>
-                <input type="text" id="oldValue">
+                <label for="filt_type">Filter Type:</label>
+                <select id="filt_type" name="filt_type">
+                    <option value="none">*Exclude This Field*</option>
+                    <option value="equal">Equals</option>
+                    <option value="greater">Greater Than</option>
+                    <option value="less">Less Than</option>
+                </select>
 
-                <label for="newValue">New Value:</label>
-                <input type="text" id="newValue">
+                <label for="filt_val">Filter Value:</label>
+                <input type="text" id="filt_val" name="filt_val">
+
+                <button id="deleteDataBtn">Delete Data</button>
+            </div>
+        </form>
+        <hr>
+
+        <!-- POST Form -->
+        <!-- Form to Update Data in the Database -->
+        <form>
+            <div class="form-section" id="updateForm">
+                <h2>Update the Database</h2>
+                <label for="id">Food Name:</label>
+                <input type="text" id="id" name="id">
+
+                <div style="text-align: center; width: 100%;">
+                    <l1 style="color: brown; font-family: 'Trebuchet MS';"> OR </l1><br><br>
+                </div>
+
+                <label for="filt_field">Attribute:</label>
+                <select id="filt_field" name="filt_field">
+                    <option value="" disabled selected style="color: lightgray;">Please select attribute...</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="itemName">Item Name</option>
+                    <option value="calories">Calories</option>
+                    <option value="protein">Protein</option>
+                    <option value="carbs">Carbs</option>
+                    <option value="fats">Fats</option>
+                </select>
+
+                <label for="filt_type">Filter Type:</label>
+                <select id="filt_type" name="filt_type">
+                    <option value="none">*Exclude This Field*</option>
+                    <option value="equal">Equals</option>
+                    <option value="greater">Greater Than</option>
+                    <option value="less">Less Than</option>
+                </select>
+
+                <label for="old_val">Old Value:</label>
+                <input type="text" id="old_val" name="old_val">
+
+                <label for="new_val">New Value:</label>
+                <input type="text" id="new_val" name="new_val">
 
                 <button id="updateDataBtn">Update Data</button>
-            </form>
-            <hr>
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif"
-                alt="funny burger GIF" class="center">
-            <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
-            <h3>DSCI551</h3>
-        </div>
-    </div>
+            </div>
+        </form>
+        <hr>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jejcyZXY2aGxuY2I0a3czZjNpMnM3Y3B3NXBzNzMyejRhdmM3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xJx8kj5ryC9aEg/giphy.gif"
+            alt="funny burger GIF" class="center">
+        <h3>Cliff Chen, Rodrigo Ugarte, Kelly Chung</h3>
+        <h3>DSCI551</h3>
 
+        <a href="help">
+            <button style="color: white; background-color: white; border: 2px solid #f2f2f2;">help</button>
+        </a>
+    </div>
 </body>
 
 </html>
