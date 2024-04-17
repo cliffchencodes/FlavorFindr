@@ -323,6 +323,20 @@
           Aggregation</button>
       </div>
     </form>
+
+    <script>
+      function showAggregationField() {
+        var operation = document.getElementById("agg_operation").value;
+        var fieldDropdown = document.getElementById("aggregation_field");
+
+        if (operation == "min" || operation == "max") {
+          fieldDropdown.style.display = "block";
+        } else {
+          fieldDropdown.style.display = "none";
+        }
+      }
+    </script>
+
     <hr>
 
 
