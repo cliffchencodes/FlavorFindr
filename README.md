@@ -20,7 +20,7 @@ The ‘templates’ folder contains .html files that configure views for the use
 Lastly, the ‘run.py’ file runs the Flask application. 
 
 ### Code Flow 
-As it comes together, ‘run.py’ is run first to open up the application. The user then completes a sample operation such as an add. The data is parsed from the HTML and processed by ‘userAPI_noDjango.py’ and formatted into a JSON. The JSON is then passed to a request that is sent to the firebase to be appended to the database. Lastly, a success message is received by ‘userAPI_noDjango.py’ and the message routes the user to either a successful or failed view. A back button is available on the resulting pages to bring the admin or user back to the main page so further actions can be taken. 
+As it comes together, ‘run.py’ is run first to open up the application. The user then completes a sample operation such as an add. The data is parsed from the HTML and processed by ‘userAPI_noDjango.py’ and formatted into a JSON. The JSON is then passed to a request that is sent to the firebase to be appended to the database. Lastly, a success message is received by ‘userAPI_noDjango.py’ and the message routes the user to either a successful or failed view. A back button is available on the resulting pages to bring the admin or user back to the main page so further actions can be taken. The firebase databases are hashed on the first letter of the food's name, and there are 5 available databases. 
 
 ### To Run the Program
 To run the program, simply run 'run.py' and the app will run locally!
